@@ -1,3 +1,3 @@
 public enum EventType {
-    ARR, DEP
+    ARR, DEP1, DEP2
 }

@@ -9,8 +9,6 @@ public class EventList {
         eventList = new PriorityQueue<>();
     }
 
-
-
     public void add(Event e) {
         // create a new arrival event for the next customer who will arrive at e.getTime() OR
         //creating a departure event for the customer who is currently being served, and will be ready at e.getTime()
@@ -22,7 +20,7 @@ public class EventList {
         if (eventList.isEmpty())
             return null;
         // remove the event from the list
-        System.out.printf("Removing from the event list %s %.2f\n",eventList.peek().getType(), eventList.peek().getTime());
+        System.out.printf("Removing from the event list %s %.2f\n", eventList.peek().getType(), eventList.peek().getTime());
         return eventList.remove();
     }
 
@@ -39,26 +37,4 @@ public class EventList {
             System.out.println(e);
         }
     }
-
-    public static void main(String[] args) {
-        EventList myEventList = new EventList();
-        Random random = new Random(); // set static seed value for debug to generate same numbers
-
-        // generate events
-        for (int i = 0; i < 10; i++) {
-            EventType type;
-            if (random.nextBoolean())
-                type = EventType.ARR;
-            else
-                type = EventType.DEP;
-            myEventList.add(new Event(type, random.nextInt(1000)));
-        }
-
-        // remove the first event to be processed
-        System.out.println("Event removed: " + myEventList.remove());
-
-        // finally print the whole event list
-        myEventList.print();
-    }
-
 }
