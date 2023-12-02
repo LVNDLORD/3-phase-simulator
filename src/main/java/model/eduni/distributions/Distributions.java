@@ -1,4 +1,4 @@
-package model.distributions;
+package model.eduni.distributions;
 
 /**
  * offers several discrete and continuous distributions all seeded by a common

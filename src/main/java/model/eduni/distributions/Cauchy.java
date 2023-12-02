@@ -1,4 +1,4 @@
-package model.distributions;
+package model.eduni.distributions;
 
 /**
  * A random number generator based on the Cauchy distribution.

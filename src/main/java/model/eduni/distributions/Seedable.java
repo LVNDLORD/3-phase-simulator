@@ -1,4 +1,4 @@
-package model.distributions;
+package model.eduni.distributions;
 
 /** represents classes which has a seed
  * @see Generator

@@ -1,7 +1,7 @@
 package model;// to add arrival events to the event list
 
-import model.distributions.ContinuousGenerator;
-import model.distributions.Negexp;
+import model.eduni.distributions.ContinuousGenerator;
+import model.eduni.distributions.Negexp;
 
 public class ArrivalProcess {
     private ContinuousGenerator generator;

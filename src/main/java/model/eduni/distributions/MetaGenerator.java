@@ -1,4 +1,4 @@
-package model.distributions;
+package model.eduni.distributions;
 
 import java.io.PrintWriter;
 import java.io.FileWriter;
@@ -22,7 +22,7 @@ public class MetaGenerator {
     }
     public void generate() {	
 	try {
-	    String fileName = "eduni/distributions/"+className+".java";
+	    String fileName = "model/eduni/distributions/" +className+".java";
 	    PrintWriter pw = new PrintWriter(new FileWriter(fileName));
 	    Distributions d = new Distributions();
 	    Class<? extends Distributions> cl = d.getClass();

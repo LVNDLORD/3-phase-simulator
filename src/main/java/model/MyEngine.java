@@ -5,8 +5,8 @@ package model;// Simulate a queueing system with one service point and one queue
 // The program prints the average waiting time.
 // 2:09:10  - 23.11 (how B-phase works)
 
-import model.distributions.Negexp;
-import model.distributions.Normal;
+import model.eduni.distributions.Negexp;
+import model.eduni.distributions.Normal;
 
 public class MyEngine extends Engine {
 

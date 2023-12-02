@@ -1,4 +1,4 @@
-package model.distributions;
+package model.eduni.distributions;
 
 /** A SeedGenerator is a DiscreteGenerator which produces well-spaced seeds
  *  according to its spacing attribute. It relies on a <code>RandomGenerator</code>
