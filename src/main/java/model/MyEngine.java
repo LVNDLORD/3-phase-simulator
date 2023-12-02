@@ -9,6 +9,8 @@ import model.eduni.distributions.Negexp;
 import model.eduni.distributions.Normal;
 
 public class MyEngine extends Engine {
+    // Actual simulation body
+    // Inform controller when simulation's state changes
 
     private ArrivalProcess arrivalProcess;
 
