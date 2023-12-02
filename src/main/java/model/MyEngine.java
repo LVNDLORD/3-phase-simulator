@@ -1,12 +1,12 @@
-// Simulate a queueing system with one service point and one queue.
+package model;// Simulate a queueing system with one service point and one queue.
 // The service time is normally distributed with mean 10.
 // The interarrival time is exponentially distributed with mean 15.
 // The simulation runs until the number of arrivals is 1000.
 // The program prints the average waiting time.
 // 2:09:10  - 23.11 (how B-phase works)
 
-import eduni.distributions.Negexp;
-import eduni.distributions.Normal;
+import model.distributions.Negexp;
+import model.distributions.Normal;
 
 public class MyEngine extends Engine {
 

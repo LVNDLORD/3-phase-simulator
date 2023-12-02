@@ -1,6 +1,7 @@
+package model;
+
 import java.util.Arrays;
 import java.util.PriorityQueue;
-import java.util.Random;
 
 public class EventList {
     private PriorityQueue<Event> eventList;

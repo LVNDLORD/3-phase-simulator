@@ -1,4 +1,4 @@
-package eduni.distributions;
+package model.distributions;
 
 /**
  * A random number generator based on the beta distribution.

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+   <children>
+      <Label layoutX="86.0" layoutY="30.0" prefHeight="197.0" prefWidth="422.0" text="This is GUI for simulation. Open src/resources/interface.fxml in SceneBuilder to edit layout and View class to make GUI responsive." wrapText="true" />
+   </children>
+</AnchorPane>

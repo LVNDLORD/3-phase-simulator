@@ -1,4 +1,4 @@
-package eduni.distributions;
+package model.distributions;
 
 /** A continuous generator provides a double value according to the distribution it relies on.
  */

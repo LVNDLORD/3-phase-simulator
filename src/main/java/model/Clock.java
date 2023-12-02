@@ -1,3 +1,5 @@
+package model;
+
 public class Clock {
 
     private static Clock instance;

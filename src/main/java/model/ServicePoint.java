@@ -1,4 +1,6 @@
-import eduni.distributions.ContinuousGenerator;
+package model;
+
+import model.distributions.ContinuousGenerator;
 
 import java.util.LinkedList;
 

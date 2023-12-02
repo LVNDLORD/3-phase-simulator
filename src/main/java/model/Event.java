@@ -1,3 +1,5 @@
+package model;
+
 public class Event implements Comparable<Event> {
 
     private EventType type;

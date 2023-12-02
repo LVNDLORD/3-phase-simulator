@@ -1,3 +1,5 @@
+package model;
+
 public class Customer {
 
     private static final String YELLOW = "\033[0;93m";
@@ -15,7 +17,7 @@ public class Customer {
         this.id = i++;
         arrivalTime = Clock.getInstance().getClock();
         System.out.printf("New customer #%d arrived at %.2f\n", id, arrivalTime);
-        //  System.out.println("Customers in queue: " + ServicePoint.getQueueSize());
+        //  System.out.println("Customers in queue: " + model.ServicePoint.getQueueSize());
     }
 
     public Customer(double arrivalTime) {
@@ -44,7 +46,7 @@ public class Customer {
         serviceTimeSum += (removalTime - arrivalTime);
         double meanServiceTime = serviceTimeSum / id;   // id is the number of customers served
 
-        System.out.printf("%sCustomer #%d has been served. Customer arrived at:" +
+        System.out.printf("%sCustomer #%d has been served. model.Customer arrived at:" +
                         " %.2f, removed at: %.2f, stayed for: %.2f. Mean service time: %.2f%s\n",
                 YELLOW, id, arrivalTime, removalTime, (removalTime - arrivalTime), meanServiceTime, WHITE);
 
