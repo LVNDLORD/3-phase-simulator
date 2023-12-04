@@ -19,6 +19,13 @@ public class Simulation extends Engine {
 
     private final Controller controller;
 
+    public enum Distributions {
+        Normal,
+        Binomial,
+        Exponential,
+        Poisson
+    }
+
     public Simulation(Controller controller) {
         super();
         this.controller = controller;

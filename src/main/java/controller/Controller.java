@@ -59,10 +59,12 @@ public class Controller {
      * 
      * @param servicePointsCount Number of initial service points
      * @param customersCount     Total number of customers to be served
+     * @param simulationTime     For how long simulation should run (in simulation time, not real time)
+     * @param distribution       Distribution type. Possible values are "Normal", "Binomial", "Exponential" and "Poisson"
      * @return Boolean value, indicating whether simulation launch succeeded or
      *         failed
      */
-    public boolean startSimulation(int servicePointsCount, int customersCount) {
+    public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime, Simulation.Distributions distribution) {
         try {
             sim = new Simulation(this);
             return true;
