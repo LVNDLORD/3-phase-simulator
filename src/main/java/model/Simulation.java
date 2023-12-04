@@ -5,10 +5,11 @@ package model;// Simulate a queueing system with one service point and one queue
 // The program prints the average waiting time.
 // 2:09:10  - 23.11 (how B-phase works)
 
+import controller.Controller;
 import model.eduni.distributions.Negexp;
 import model.eduni.distributions.Normal;
 
-public class MyEngine extends Engine {
+public class Simulation extends Engine {
     // Actual simulation body
     // Inform controller when simulation's state changes
 
@@ -16,12 +17,24 @@ public class MyEngine extends Engine {
 
     private ServicePoint[] servicePoint;
 
-    public MyEngine() {
+    private final Controller controller;
+
+    public enum Distributions {
+        Normal,
+        Binomial,
+        Exponential,
+        Poisson
+    }
+
+    public Simulation(Controller controller) {
         super();
+        this.controller = controller;
         servicePoint = new ServicePoint[2]; // array for the service points. Increase the size to add new SPs.
         servicePoint[0] = new ServicePoint("service ONE", new Normal(10, 6), eventlist, EventType.DEP1);
         servicePoint[1] = new ServicePoint("service TWO", new Normal(10, 10), eventlist, EventType.DEP2);
         arrivalProcess = new ArrivalProcess(new Negexp(10), eventlist, EventType.ARR); // average customer arrival time
+
+        log("Simulation initialized");
     }
 
     protected void initialize() {
@@ -65,5 +78,9 @@ public class MyEngine extends Engine {
         System.out.printf("\nSimulation ended at %.2f\n", Clock.getInstance().getClock());
         System.out.println("Total customers served: " + servicePoint[1].getServedCustomers());
         //System.out.printf("Average service time: %.2f\n", servicePoint[0].getMeanServiceTime());
+    }
+
+    private void log (String s) {
+        System.out.println(s);
     }
 }
