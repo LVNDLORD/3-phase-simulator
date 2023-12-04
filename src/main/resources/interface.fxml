@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="controller.Controller" xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" >
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
     </top>
@@ -58,19 +58,11 @@
                 
                 <!-- Simulation content goes here -->
                 <HBox alignment="BOTTOM_CENTER" spacing="10">
-                <ImageView fitHeight="100" fitWidth="50" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@cashier.png" />
-                </ImageView>
-                <ImageView fitHeight="100" fitWidth="50" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@cashier.png" />
-                </ImageView>
-                <ImageView fitHeight="100" fitWidth="50" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@cashier.png" />
-                </ImageView>
-                <ImageView fitHeight="100" fitWidth="50" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@cashier.png" />
-                </ImageView>
-            </HBox>
+                   <HBox fx:id="cashierContainer" alignment="BOTTOM_CENTER" spacing="10">
+                   <!-- Cashier images will be added here dynamically based on slider value -->
+                   </HBox>
+                </HBox>
+
             </StackPane>
         </VBox>
     </center>
