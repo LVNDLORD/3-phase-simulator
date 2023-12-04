@@ -13,7 +13,7 @@ public class ParameterException extends Error {
 
 	/**
      * The constructor for errors with a message.
-     * @param name The error's message
+     * @param msg The error's message
      */
     public ParameterException(String msg) { super(msg); }
 
