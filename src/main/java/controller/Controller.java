@@ -4,10 +4,13 @@ import java.io.InputStream;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.Simulation;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Controller {
     // When user interacts with interface - update simulation state
@@ -16,6 +19,9 @@ public class Controller {
     private Slider cashierSlider;
     @FXML
     private HBox cashierContainer; // The container for cashier images
+    // Reference to the log TextArea in the "Logs" section
+    @FXML
+    private TextArea logTextArea;
 
     private Simulation sim;
 
@@ -74,6 +80,13 @@ public class Controller {
     }
 
     private void log(String s) {
-        System.out.println(s);
+        // Get the current time in HH:mm:ss format
+        LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        System.out.println(currentTime + " " + s);
+
+        if (logTextArea != null) {
+            logTextArea.appendText(currentTime + " " + s + "\n");
+        }
     }
 }
