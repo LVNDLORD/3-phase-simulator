@@ -13,7 +13,7 @@ public class Controller {
     }
 
     /**
-     *
+     * Attempts to launch simulation (model) with given parameters.
      * @param servicePointsCount Number of initial service points
      * @param customersCount Total number of customers to be served
      * @return Boolean value, indicating whether simulation launch succeeded or failed
