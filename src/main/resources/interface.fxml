@@ -49,7 +49,7 @@
             <HBox style="-fx-margin: 10px;">
                 <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Output:" />
                 <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
-                <Button style="-fx-font-family: Arial;" text="▶" /> <!-- Fast Forward -->
+                <Button style="-fx-font-family: Arial;" text="▶" onMouseClicked="#start"/> <!-- Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="⏩" /> <!-- Very Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="■" /> <!-- Stop -->
             </HBox>

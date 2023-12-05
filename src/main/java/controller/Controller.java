@@ -3,10 +3,12 @@ package controller;
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import model.Simulation;
 import java.time.LocalTime;
@@ -26,7 +28,6 @@ public class Controller {
     private Simulation sim;
 
     public Controller() {
-        startSimulation(0,0,0,Simulation.Distributions.Normal);
         log("Controller initialized");
     }
 
@@ -53,10 +54,8 @@ public class Controller {
                 imageView.setFitWidth(50);
                 imageView.setPreserveRatio(true);
                 cashierContainer.getChildren().add(imageView);
-
-                log("Cashier image added.");
             } catch (Exception e) {
-                log("Exception occurred: " + e.getMessage());
+                log("Exception occurred: " + e.getMessage(), RED);
             }
         }
     }
@@ -72,6 +71,16 @@ public class Controller {
      *         failed
      */
     public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime, Simulation.Distributions distribution) {
+        if (servicePointsCount < 1) {
+            log("Number of service points should be positive", RED);
+            return false;
+        }
+
+        if (simulationTime < 1) {
+            log("Simulation time should be positive", RED);
+            return false;
+        }
+
         try {
             sim = new Simulation(this);
             return true;
@@ -81,7 +90,15 @@ public class Controller {
         }
     }
 
-    private void log(String s) {
+    @FXML
+    public void start(MouseEvent mouseEvent) {
+        int cashiersCount = (int)Math.floor(cashierSlider.getValue());
+        log(cashiersCount);
+    }
+
+    private void log(Object s) {
+        s = s.toString();
+
         // Get the current time in HH:mm:ss format
         LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
@@ -92,7 +109,9 @@ public class Controller {
         }
     }
 
-    private void log(String s, String color) {
+    private void log(Object s, String color) {
+        s = s.toString();
+
         // Get the current time in HH:mm:ss format
         LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
