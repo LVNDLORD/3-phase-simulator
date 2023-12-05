@@ -11,10 +11,9 @@ import javafx.scene.layout.HBox;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class Controller {
-    // When user interacts with interface - update simulation state
-    // When simulation's state changes - update interface
     @FXML
     private Slider cashierSlider;
     @FXML
@@ -22,10 +21,12 @@ public class Controller {
     // Reference to the log TextArea in the "Logs" section
     @FXML
     private TextArea logTextArea;
+    private static final String RED = "\033[0;31m";
 
     private Simulation sim;
 
     public Controller() {
+        startSimulation(0,0,0,Simulation.Distributions.Normal);
         log("Controller initialized");
     }
 
@@ -75,6 +76,7 @@ public class Controller {
             sim = new Simulation(this);
             return true;
         } catch (Exception e) {
+            log("Failed to launch simulation. Error: " + e.getMessage(), RED);
             return false;
         }
     }
@@ -84,6 +86,17 @@ public class Controller {
         LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         System.out.println(currentTime + " " + s);
+
+        if (logTextArea != null) {
+            logTextArea.appendText(currentTime + " " + s + "\n");
+        }
+    }
+
+    private void log(String s, String color) {
+        // Get the current time in HH:mm:ss format
+        LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        System.out.printf("%s" + currentTime + " " + s + "%s \n", color, "\033[0;38m");
 
         if (logTextArea != null) {
             logTextArea.appendText(currentTime + " " + s + "\n");
