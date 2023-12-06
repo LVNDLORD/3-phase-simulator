@@ -83,6 +83,8 @@ public class Controller {
 
         try {
             sim = new Simulation(this);
+            sim.setSimulationTime(simulationTime);
+            sim.run();
             return true;
         } catch (Exception e) {
             log("Failed to launch simulation. Error: " + e.getMessage(), RED);
@@ -93,7 +95,7 @@ public class Controller {
     @FXML
     public void start(MouseEvent mouseEvent) {
         int cashiersCount = (int)Math.floor(cashierSlider.getValue());
-        log(cashiersCount);
+        startSimulation(cashiersCount, 100, 50, Simulation.Distributions.Normal);
     }
 
     private void log(Object s) {
