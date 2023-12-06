@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
     </top>
@@ -58,11 +58,11 @@
                 <Button style="-fx-font-family: Arial;" text="⏩" /> <!-- Very Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="■" /> <!-- Stop -->
             </HBox>
-            <StackPane prefHeight="352.0" prefWidth="328.0" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 2px;"> <!-- Your simulation container -->
+            <StackPane prefHeight="352.0" prefWidth="600.0" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 2px;"> <!-- Your simulation container -->
                 <!-- Simulation content goes here -->
                 <HBox alignment="BOTTOM_CENTER" spacing="10">
-                    <HBox fx:id="cashierContainer" alignment="BOTTOM_CENTER" spacing="10">
-                        <!-- Cashier images will be added here dynamically based on slider value -->
+                    <HBox fx:id="cashierContainer" alignment="BOTTOM_CENTER" spacing="10" minWidth="600">
+                    <!-- Cashier images will be added here dynamically based on slider value -->
                     </HBox>
                 </HBox>
             </StackPane>
