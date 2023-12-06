@@ -26,6 +26,8 @@ public class Controller {
     private TextArea logTextArea;
     @FXML
     private ComboBox<String> distributionComboBox;
+    @FXML
+    private ComboBox<String> simulationTimeComboBox;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -66,6 +68,12 @@ public class Controller {
                     break;
             }
         });
+
+        // Initialize the simulationTimeComboBox
+        for (int hour = 1; hour <= 12; hour++) {
+            simulationTimeComboBox.getItems().add(String.valueOf(hour));
+        }
+        simulationTimeComboBox.setValue("1"); // Set default selection
     }
 
     private void updateCashierDesks(int count) {

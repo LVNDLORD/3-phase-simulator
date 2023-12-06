@@ -11,7 +11,7 @@
         <VBox alignment="TOP_CENTER" prefHeight="383.0" prefWidth="170.0" style="-fx-padding: 10px; -fx-font-family: Arial; -fx-font-size: 14px; -fx-margin: 10px;">
             <children>
                 <Label style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Input: " />
-                <VBox prefHeight="200.0" prefWidth="100.0">
+                <VBox prefHeight="48.0" prefWidth="150.0">
                     <children>
                         <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier" />
                         <Slider fx:id="cashierSlider" majorTickUnit="1" max="10" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
@@ -19,22 +19,33 @@
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
-                        <Label prefHeight="47.0" prefWidth="132.0" text="Add a self-service desk" />
-                        <Slider fx:id="selfServiceSlider" majorTickUnit="1" max="10" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
+                        <Label prefHeight="19.0" prefWidth="132.0" text="Add a self-service desk" />
+                        <Slider fx:id="selfServiceSlider" majorTickUnit="1" max="10" min="1" prefHeight="22.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
                     </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
-                        <Label text="Number of customers" />
+                        <Label prefHeight="33.0" prefWidth="134.0" text="Number of customers" />
                         <Slider fx:id="numOfCustomersSlider" majorTickUnit="1000" max="10000" min="1000" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000" />
                     </children>
                 </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Probability distributions:" />
+                  <Label text="Probability Distributions:" />
                   <ComboBox fx:id="distributionComboBox" prefWidth="150.0" />
                </children>
             </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Simulation Time (h):" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                         <ComboBox fx:id="simulationTimeComboBox" prefWidth="150.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+
             </children>
         </VBox>
     </left>
