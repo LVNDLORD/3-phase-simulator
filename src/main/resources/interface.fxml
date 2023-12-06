@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TitledPane?>
-
-<BorderPane fx:controller="controller.Controller" xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
     </top>
@@ -26,30 +14,36 @@
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
                         <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier" />
-                        <Slider fx:id="cashierSlider" min="1" max="10" value="1" showTickMarks="true" showTickLabels="true" snapToTicks="true" majorTickUnit="1" />
+                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="10" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
                     </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
                         <Label prefHeight="47.0" prefWidth="132.0" text="Add a self-service desk" />
-                        <Slider fx:id="selfServiceSlider" min="1" max="10" value="1" showTickMarks="true" showTickLabels="true" snapToTicks="true" majorTickUnit="1" />
+                        <Slider fx:id="selfServiceSlider" majorTickUnit="1" max="10" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
                     </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
                         <Label text="Number of customers" />
-                        <Slider fx:id="numOfCustomersSlider" min="1000" max="10000" value="1000" showTickMarks="true" showTickLabels="true" snapToTicks="true" majorTickUnit="1000" />
+                        <Slider fx:id="numOfCustomersSlider" majorTickUnit="1000" max="10000" min="1000" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000" />
                     </children>
                 </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="Probability distributions:" />
+                  <ComboBox fx:id="distributionComboBox" prefWidth="150.0" />
+               </children>
+            </VBox>
             </children>
         </VBox>
     </left>
     <center>
         <VBox>
             <HBox style="-fx-margin: 10px;">
-                <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Output:" />
+                <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Visualisation:" />
                 <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
-                <Button style="-fx-font-family: Arial;" text="▶" onMouseClicked="#start"/> <!-- Fast Forward -->
+                <Button onMouseClicked="#start" style="-fx-font-family: Arial;" text="▶" /> <!-- Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="⏩" /> <!-- Very Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="■" /> <!-- Stop -->
             </HBox>
@@ -65,11 +59,18 @@
                 <panes>
                 <TitledPane text="Logs">
                     <content>
-                        <TextArea fx:id="logTextArea" editable="false" wrapText="true" prefWidth="300" prefHeight="200" />
+                        <TextArea fx:id="logTextArea" editable="false" prefHeight="200" prefWidth="300" wrapText="true" />
                     </content>
                 </TitledPane>
                 </panes>
             </Accordion>
         </VBox>
     </center>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Output:" />
+         </children>
+      </VBox>
+   </right>
 </BorderPane>

@@ -14,6 +14,7 @@ import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import javafx.scene.control.ComboBox;
 
 public class Controller {
     @FXML
@@ -23,6 +24,11 @@ public class Controller {
     // Reference to the log TextArea in the "Logs" section
     @FXML
     private TextArea logTextArea;
+    @FXML
+    private ComboBox<String> distributionComboBox;
+
+    private String selectedDistribution = "Normal"; // Default distribution type
+
     private static final String RED = "\033[0;31m";
 
     private Simulation sim;
@@ -34,6 +40,31 @@ public class Controller {
     public void initialize() {
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
+        });
+
+        // Initialize the distributionComboBox
+        distributionComboBox.getItems().addAll("Normal", "Binomial", "Exponential", "Poisson");
+        distributionComboBox.setValue(selectedDistribution); // Set default selection
+
+        // Handle ComboBox selection changes
+        distributionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            log("Selected distribution: " + newVal);
+            // Store the selected distribution type for later use
+            selectedDistribution = newVal;
+            switch (newVal) {
+                case "Normal":
+                    // logic for handling Normal distribution
+                    break;
+                case "Binomial":
+                    // logic for handling Binomial distribution
+                    break;
+                case "Exponential":
+                    // logic for handling Exponential distribution
+                    break;
+                case "Poisson":
+                    // logic for handling Poisson distribution
+                    break;
+            }
         });
     }
 
@@ -65,12 +96,15 @@ public class Controller {
      * 
      * @param servicePointsCount Number of initial service points
      * @param customersCount     Total number of customers to be served
-     * @param simulationTime     For how long simulation should run (in simulation time, not real time)
-     * @param distribution       Distribution type. Possible values are "Normal", "Binomial", "Exponential" and "Poisson"
+     * @param simulationTime     For how long simulation should run (in simulation
+     *                           time, not real time)
+     * @param distribution       Distribution type. Possible values are "Normal",
+     *                           "Binomial", "Exponential" and "Poisson"
      * @return Boolean value, indicating whether simulation launch succeeded or
      *         failed
      */
-    public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime, Simulation.Distributions distribution) {
+    public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime,
+            Simulation.Distributions distribution) {
         if (servicePointsCount < 1) {
             log("Number of service points should be positive", RED);
             return false;
@@ -94,7 +128,7 @@ public class Controller {
 
     @FXML
     public void start(MouseEvent mouseEvent) {
-        int cashiersCount = (int)Math.floor(cashierSlider.getValue());
+        int cashiersCount = (int) Math.floor(cashierSlider.getValue());
         startSimulation(cashiersCount, 100, 50, Simulation.Distributions.Normal);
     }
 
