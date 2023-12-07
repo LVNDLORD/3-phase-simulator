@@ -61,13 +61,13 @@
                     </HBox>
                 </HBox>
             </StackPane>
-            <Accordion VBox.vgrow="ALWAYS">
+            <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">
                 <panes>
-                <TitledPane text="Logs">
-                    <content>
-                        <TextArea fx:id="logTextArea" editable="false" wrapText="true" prefWidth="300" prefHeight="200" />
-                    </content>
-                </TitledPane>
+                    <TitledPane text="Logs" expanded="true">
+                        <content>
+                            <TextArea fx:id="logTextArea" editable="false" wrapText="true" prefWidth="300" prefHeight="200" />
+                        </content>
+                    </TitledPane>
                 </panes>
             </Accordion>
         </VBox>

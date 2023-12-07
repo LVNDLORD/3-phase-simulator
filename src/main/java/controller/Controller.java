@@ -3,6 +3,7 @@ package controller;
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -23,6 +24,8 @@ public class Controller {
     // Reference to the log TextArea in the "Logs" section
     @FXML
     private TextArea logTextArea;
+    @FXML
+    private Accordion accordion;
     private static final String RED = "\033[0;31m";
 
     private Simulation sim;
@@ -35,6 +38,8 @@ public class Controller {
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
         });
+        // Set the "Logs" TitledPane to be expanded by default
+        accordion.setExpandedPane(accordion.getPanes().get(0));
     }
 
     private void updateCashierDesks(int count) {
