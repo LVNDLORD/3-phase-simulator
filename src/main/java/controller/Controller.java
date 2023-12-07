@@ -24,6 +24,8 @@ public class Controller {
     private HBox cashierContainer; // The container for cashier images
     // Reference to the log TextArea in the "Logs" section
     @FXML
+    private Slider numOfCustomersSlider;
+    @FXML
     private TextArea logTextArea;
     @FXML
     private ComboBox<String> distributionComboBox;
@@ -160,7 +162,9 @@ public class Controller {
             return;
         }
 
-        startSimulation(cashiersCount, 100, time, distribution);
+        int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
+
+        startSimulation(cashiersCount, customersCount, time, distribution);
     }
 
     private void log(Object s) {
