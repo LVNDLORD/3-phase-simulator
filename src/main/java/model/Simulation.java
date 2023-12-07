@@ -27,7 +27,7 @@ public class Simulation extends Engine {
         Poisson
     }
 
-    public Simulation(Controller controller) {
+    public Simulation(Controller controller, int servicePointsCount, int customersCount, int simulationTime, Distributions distribution) {
         super();
         this.controller = controller;
         servicePoint = new ServicePoint[2]; // array for the service points. Increase the size to add new SPs.
@@ -35,7 +35,13 @@ public class Simulation extends Engine {
         servicePoint[1] = new ServicePoint("service TWO", new Normal(10, 10), eventlist, EventType.DEP2);
         arrivalProcess = new ArrivalProcess(new Negexp(10), eventlist, EventType.ARR); // average customer arrival time
 
-        log("Simulation initialized");
+        String output = "Simulation initialized with following parameters: \n";
+        output += "Cashier desks count: " + servicePointsCount + "\n";
+        output += "Customers count: " + customersCount + "\n";
+        output += "Simulation time: " + simulationTime + "h\n";
+        output += "Distribution: " + distribution + "\n";
+
+        log(output);
     }
 
     protected void initialize() {

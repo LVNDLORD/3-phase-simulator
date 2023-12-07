@@ -116,7 +116,7 @@ public class Controller {
         }
 
         try {
-            sim = new Simulation(this);
+            sim = new Simulation(this, servicePointsCount, customersCount, simulationTime, distribution);
             sim.setSimulationTime(simulationTime);
             sim.run();
             return true;
