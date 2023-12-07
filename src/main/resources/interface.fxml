@@ -12,9 +12,10 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ScrollPane?>
 
+<?import javafx.scene.text.TextFlow?>
 <BorderPane fx:controller="controller.Controller" xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171">
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
@@ -65,7 +66,11 @@
                 <panes>
                     <TitledPane text="Logs" expanded="true">
                         <content>
-                            <TextArea fx:id="logTextArea" editable="false" wrapText="true" prefWidth="300" prefHeight="200" />
+                            <ScrollPane fx:id="logScrollPane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true">
+                                <content>
+                                    <TextFlow fx:id="logTextFlow" prefWidth="300" prefHeight="200" />
+                                </content>
+                            </ScrollPane>
                         </content>
                     </TitledPane>
                 </panes>
