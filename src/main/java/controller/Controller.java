@@ -55,27 +55,6 @@ public class Controller {
         distributionComboBox.getItems().addAll("Normal", "Binomial", "Exponential", "Poisson");
         distributionComboBox.setValue(selectedDistribution); // Set default selection
 
-        // Handle ComboBox selection changes
-        distributionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            log("Selected distribution: " + newVal);
-            // Store the selected distribution type for later use
-            selectedDistribution = newVal;
-            switch (newVal) {
-                case "Normal":
-                    // logic for handling Normal distribution
-                    break;
-                case "Binomial":
-                    // logic for handling Binomial distribution
-                    break;
-                case "Exponential":
-                    // logic for handling Exponential distribution
-                    break;
-                case "Poisson":
-                    // logic for handling Poisson distribution
-                    break;
-            }
-        });
-
         // Initialize the simulationTimeComboBox
         for (int hour = 1; hour <= 12; hour++) {
             simulationTimeComboBox.getItems().add(String.valueOf(hour));
@@ -145,10 +124,43 @@ public class Controller {
         }
     }
 
+    /**
+     * Runs when user clicks start button. Fetches input values and passes them to <em>startSimulation</em>
+     */
     @FXML
     public void start(MouseEvent mouseEvent) {
         int cashiersCount = (int) Math.floor(cashierSlider.getValue());
-        startSimulation(cashiersCount, 100, 50, Simulation.Distributions.Normal);
+
+        Simulation.Distributions distribution;
+        String distName = distributionComboBox.getValue();
+
+        switch(distName) {
+            case "Normal":
+                distribution = Simulation.Distributions.Normal;
+                break;
+            case "Binomial":
+                distribution = Simulation.Distributions.Binomial;
+                break;
+            case "Exponential":
+                distribution = Simulation.Distributions.Exponential;
+                break;
+            case "Poisson":
+                distribution = Simulation.Distributions.Poisson;
+                break;
+            default:
+                log("Unknown distribution: " + distName, RED);
+                return;
+        }
+
+        int time;
+        try {
+            time = Integer.parseInt(simulationTimeComboBox.getValue());
+        } catch (Exception e) {
+            log("Time cannot be cast to integer " + simulationTimeComboBox.getValue());
+            return;
+        }
+
+        startSimulation(cashiersCount, 100, time, distribution);
     }
 
     private void log(Object s) {
