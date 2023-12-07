@@ -12,9 +12,10 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ScrollPane?>
 
+<?import javafx.scene.text.TextFlow?>
 <BorderPane fx:controller="controller.Controller" xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171">
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
@@ -49,7 +50,7 @@
             <HBox style="-fx-margin: 10px;">
                 <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Output:" />
                 <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
-                <Button style="-fx-font-family: Arial;" text="▶" /> <!-- Fast Forward -->
+                <Button style="-fx-font-family: Arial;" text="▶" onMouseClicked="#start"/> <!-- Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="⏩" /> <!-- Very Fast Forward -->
                 <Button style="-fx-font-family: Arial;" text="■" /> <!-- Stop -->
             </HBox>
@@ -61,13 +62,17 @@
                     </HBox>
                 </HBox>
             </StackPane>
-            <Accordion VBox.vgrow="ALWAYS">
+            <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">
                 <panes>
-                <TitledPane text="Logs">
-                    <content>
-                        <TextArea fx:id="logTextArea" editable="false" wrapText="true" prefWidth="300" prefHeight="200" />
-                    </content>
-                </TitledPane>
+                    <TitledPane text="Logs" expanded="true">
+                        <content>
+                            <ScrollPane fx:id="logScrollPane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true">
+                                <content>
+                                    <TextFlow fx:id="logTextFlow" prefWidth="300" prefHeight="200" />
+                                </content>
+                            </ScrollPane>
+                        </content>
+                    </TitledPane>
                 </panes>
             </Accordion>
         </VBox>

@@ -3,25 +3,32 @@ package controller;
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 public class Controller {
-    // When user interacts with interface - update simulation state
-    // When simulation's state changes - update interface
     @FXML
     private Slider cashierSlider;
     @FXML
     private HBox cashierContainer; // The container for cashier images
     // Reference to the log TextArea in the "Logs" section
     @FXML
-    private TextArea logTextArea;
+    private TextFlow logTextFlow;
+    @FXML
+    private ScrollPane logScrollPane;
+    @FXML
+    private Accordion accordion;
+    private static final String RED = "\033[0;31m";
 
     private Simulation sim;
 
@@ -33,6 +40,10 @@ public class Controller {
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
         });
+        // Set the "Logs" TitledPane to be expanded by default
+        accordion.setExpandedPane(accordion.getPanes().get(0));
+        // Bind the vvalue property of the ScrollPane to the height of the TextFlow
+        logScrollPane.vvalueProperty().bind(logTextFlow.heightProperty());
     }
 
     private void updateCashierDesks(int count) {
@@ -42,7 +53,7 @@ public class Controller {
             try {
                 InputStream is = getClass().getResourceAsStream("/cashier.png");
                 if (is == null) {
-                    log("InputStream is null - Image not found.");
+                    log("InputStream is null - Image not found.", RED);
                     continue; // Skip this iteration if the image is not found
                 }
 
@@ -52,10 +63,8 @@ public class Controller {
                 imageView.setFitWidth(50);
                 imageView.setPreserveRatio(true);
                 cashierContainer.getChildren().add(imageView);
-
-                log("Cashier image added.");
             } catch (Exception e) {
-                log("Exception occurred: " + e.getMessage());
+                log("Exception occurred: " + e.getMessage(), RED);
             }
         }
     }
@@ -71,22 +80,64 @@ public class Controller {
      *         failed
      */
     public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime, Simulation.Distributions distribution) {
+        if (servicePointsCount < 1) {
+            log("Number of service points should be positive", RED);
+            return false;
+        }
+
+        if (simulationTime < 1) {
+            log("Simulation time should be positive", RED);
+            return false;
+        }
+
         try {
             sim = new Simulation(this);
+            sim.setSimulationTime(simulationTime);
+            sim.run();
             return true;
         } catch (Exception e) {
+            log("Failed to launch simulation. Error: " + e.getMessage(), RED);
             return false;
         }
     }
 
-    private void log(String s) {
+    @FXML
+    public void start(MouseEvent mouseEvent) {
+        int cashiersCount = (int)Math.floor(cashierSlider.getValue());
+        startSimulation(cashiersCount, 100, 50, Simulation.Distributions.Normal);
+    }
+
+    private void log(Object s) {
+        s = s.toString();
+
         // Get the current time in HH:mm:ss format
         LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
         System.out.println(currentTime + " " + s);
 
-        if (logTextArea != null) {
-            logTextArea.appendText(currentTime + " " + s + "\n");
+        if (logTextFlow != null) {
+            Text text = new Text(currentTime + " " + s + "\n");
+            logTextFlow.getChildren().add(text);
+        }
+    }
+
+    private void log(Object s, String color) {
+        s = s.toString();
+
+        // Get the current time in HH:mm:ss format
+        LocalTime currentTime = LocalTime.parse(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+
+        System.out.printf("%s" + currentTime + " " + s + "%s \n", color, "\033[0;38m");
+
+        if (logTextFlow != null) {
+            Text text = new Text(currentTime + " " + s + "\n");
+            switch (color.toLowerCase()) {
+                case RED -> text.setFill(Color.RED);
+                //case GREEN -> text.setFill(Color.GREEN); -> Example if we need more colors, add them as class constants then here.
+                default -> text.setFill(Color.BLACK); // Default to black for unknown colors - Add them as needed above
+            }
+
+            logTextFlow.getChildren().add(text);
         }
     }
 }
