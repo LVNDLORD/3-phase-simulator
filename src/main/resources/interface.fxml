@@ -64,7 +64,7 @@
             </StackPane>
             <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">
                 <panes>
-                    <TitledPane text="Logs" expanded="true">
+                    <TitledPane text="Logs">
                         <content>
                             <ScrollPane fx:id="logScrollPane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true">
                                 <content>
