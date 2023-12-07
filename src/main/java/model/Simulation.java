@@ -1,4 +1,5 @@
-package model;// Simulate a queueing system with one service point and one queue.
+package model;
+// Simulate a queueing system with one service point and one queue.
 // The service time is normally distributed with mean 10.
 // The interarrival time is exponentially distributed with mean 15.
 // The simulation runs until the number of arrivals is 1000.
