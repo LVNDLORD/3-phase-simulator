@@ -15,7 +15,7 @@ public class Simulation extends Engine {
 
     private ArrivalProcess arrivalProcess;
 
-    private ServicePoint[] servicePoint;
+    private ServicePoint[] servicePoints;
 
     private final Controller controller;
 
@@ -59,10 +59,10 @@ public class Simulation extends Engine {
         }
 
         // Create service points
-        servicePoint = new ServicePoint[servicePointsCount];
+        servicePoints = new ServicePoint[servicePointsCount];
 
         for (int i=0; i<servicePointsCount; i++) {
-            servicePoint[i] = new ServicePoint("Cashier desk " + (i+1), spDist, eventlist, EventType.DEP);
+            servicePoints[i] = new ServicePoint("Cashier desk " + (i+1), spDist, eventlist, EventType.DEP);
         }
 
         arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
@@ -77,12 +77,13 @@ public class Simulation extends Engine {
 
         switch (e.getType()) {
             case ARR:
-                servicePoint[0].addToQueue(new Customer());
+                ServicePoint sp = getShortestQueue();
+                sp.addToQueue(new Customer());
                 arrivalProcess.generateNextEvent(); // generate next arrival
                 break;
 
             case DEP:
-                a = servicePoint[0].removeFromQueue(); // removing customer from the second service point
+                a = servicePoints[0].removeFromQueue(); // removing customer from the second service point
                 // when departure from the second service point is generated
                 a.setRemovalTime(Clock.getInstance().getClock()); // setting the removal time for the customer from the system
                 a.reportResults();
@@ -91,7 +92,7 @@ public class Simulation extends Engine {
     }
 
     protected void tryCEvents() {
-        for (ServicePoint sp : servicePoint) {
+        for (ServicePoint sp : servicePoints) {
             // C event - conditional
             // if sp ready, and there is a customer in the queue, we start the service.
             if (!sp.isReserved() && sp.isOnQueue()) {
@@ -102,11 +103,19 @@ public class Simulation extends Engine {
 
     protected void results() {
         System.out.printf("\nSimulation ended at %.2f\n", Clock.getInstance().getClock());
-        System.out.println("Total customers served: " + servicePoint[0].getServedCustomers());
+        System.out.println("Total customers served: " + servicePoints[0].getServedCustomers());
         //System.out.printf("Average service time: %.2f\n", servicePoint[0].getMeanServiceTime());
     }
 
-    private void log (String s) {
-        System.out.println(s);
+    private ServicePoint getShortestQueue() {
+        ServicePoint shortest = servicePoints[0];
+
+        for (ServicePoint sp : servicePoints) {
+            if (sp.queueLength() > shortest.queueLength()) {
+                shortest = sp;
+            }
+        }
+
+        return shortest;
     }
 }

@@ -76,4 +76,8 @@ public class ServicePoint {
         return servedCustomers;
     }
 
+    public int queueLength() {
+        return queue.size();
+    }
+
 }
