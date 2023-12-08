@@ -7,8 +7,7 @@ package model;
 // 2:09:10  - 23.11 (how B-phase works)
 
 import controller.Controller;
-import model.eduni.distributions.Negexp;
-import model.eduni.distributions.Normal;
+import model.eduni.distributions.*;
 
 public class Simulation extends Engine {
     // Actual simulation body
@@ -22,26 +21,51 @@ public class Simulation extends Engine {
 
     public enum Distributions {
         Normal,
-        Binomial,
-        Exponential,
-        Poisson
+        Uniform,
+        Exponential
     }
 
-    public Simulation(Controller controller, int servicePointsCount, int customersCount, int simulationTime, Distributions distribution) {
+    /**
+     * Simulation constructor
+     * @param controller         Controller of the application
+     * @param servicePointsCount Number of cashier desks to initialize
+     * @param customersCount     ?
+     * @param dist               Probability distribution type. Provided by eduni package
+     */
+    public Simulation(Controller controller, int servicePointsCount, int customersCount, Distributions dist) {
         super();
         this.controller = controller;
-        servicePoint = new ServicePoint[2]; // array for the service points. Increase the size to add new SPs.
-        servicePoint[0] = new ServicePoint("service ONE", new Normal(10, 6), eventlist, EventType.DEP1);
-        servicePoint[1] = new ServicePoint("service TWO", new Normal(10, 10), eventlist, EventType.DEP2);
-        arrivalProcess = new ArrivalProcess(new Negexp(10), eventlist, EventType.ARR); // average customer arrival time
 
-        String output = "Simulation initialized with following parameters: \n";
-        output += "Cashier desks count: " + servicePointsCount + "\n";
-        output += "Customers count: " + customersCount + "\n";
-        output += "Simulation time: " + simulationTime + "h\n";
-        output += "Distribution: " + distribution + "\n";
+        // Create distributions
+        ContinuousGenerator spDist;
+        ContinuousGenerator apDist;
 
-        log(output);
+        switch (dist) {
+            case Normal:
+                spDist = new Normal(10, 6);
+                apDist = new Normal(10, 7);
+                break;
+            case Uniform:
+                spDist = new Uniform(1, 6);
+                apDist = new Uniform(2, 7);
+                break;
+            case Exponential:
+                spDist = new Negexp(10, 6);
+                apDist = new Negexp(10, 7);
+                break;
+            default:
+                controller.log("Invalid distribution type: " + dist, controller.RED);
+                return;
+        }
+
+        // Create service points
+        servicePoint = new ServicePoint[servicePointsCount];
+
+        for (int i=0; i<servicePointsCount; i++) {
+            servicePoint[i] = new ServicePoint("Cashier desk " + (i+1), spDist, eventlist, EventType.DEP);
+        }
+
+        arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
     }
 
     protected void initialize() {
@@ -57,13 +81,8 @@ public class Simulation extends Engine {
                 arrivalProcess.generateNextEvent(); // generate next arrival
                 break;
 
-            case DEP1:
-                a = servicePoint[0].removeFromQueue(); // removing from the first service point
-                servicePoint[1].addToQueue(a); // adding to the second service point
-                break;
-
-            case DEP2:
-                a = servicePoint[1].removeFromQueue(); // removing customer from the second service point
+            case DEP:
+                a = servicePoint[0].removeFromQueue(); // removing customer from the second service point
                 // when departure from the second service point is generated
                 a.setRemovalTime(Clock.getInstance().getClock()); // setting the removal time for the customer from the system
                 a.reportResults();
@@ -83,7 +102,7 @@ public class Simulation extends Engine {
 
     protected void results() {
         System.out.printf("\nSimulation ended at %.2f\n", Clock.getInstance().getClock());
-        System.out.println("Total customers served: " + servicePoint[1].getServedCustomers());
+        System.out.println("Total customers served: " + servicePoint[0].getServedCustomers());
         //System.out.printf("Average service time: %.2f\n", servicePoint[0].getMeanServiceTime());
     }
 

@@ -40,7 +40,7 @@ public class Controller {
     private ScrollPane logScrollPane;
     @FXML
     private Accordion accordion;
-    private static final String RED = "\033[0;31m";
+    public static final String RED = "\033[0;31m";
 
     private Simulation sim;
 
@@ -54,7 +54,7 @@ public class Controller {
         });
 
         // Initialize the distributionComboBox
-        distributionComboBox.getItems().addAll("Normal", "Binomial", "Exponential", "Poisson");
+        distributionComboBox.getItems().addAll("Normal", "Uniform", "Exponential");
         distributionComboBox.setValue(selectedDistribution); // Set default selection
 
         // Initialize the simulationTimeComboBox
@@ -116,8 +116,8 @@ public class Controller {
         }
 
         try {
-            sim = new Simulation(this, servicePointsCount, customersCount, simulationTime, distribution);
-            sim.setSimulationTime(simulationTime);
+            sim = new Simulation(this, servicePointsCount, customersCount, distribution);
+            sim.setSimulationTime(simulationTime*60);
             sim.run();
             return true;
         } catch (Exception e) {
@@ -140,14 +140,11 @@ public class Controller {
             case "Normal":
                 distribution = Simulation.Distributions.Normal;
                 break;
-            case "Binomial":
-                distribution = Simulation.Distributions.Binomial;
+            case "Uniform":
+                distribution = Simulation.Distributions.Uniform;
                 break;
             case "Exponential":
                 distribution = Simulation.Distributions.Exponential;
-                break;
-            case "Poisson":
-                distribution = Simulation.Distributions.Poisson;
                 break;
             default:
                 log("Unknown distribution: " + distName, RED);
@@ -167,7 +164,7 @@ public class Controller {
         startSimulation(cashiersCount, customersCount, time, distribution);
     }
 
-    private void log(Object s) {
+    public void log(Object s) {
         s = s.toString();
 
         // Get the current time in HH:mm:ss format
@@ -181,7 +178,7 @@ public class Controller {
         }
     }
 
-    private void log(Object s, String color) {
+    public void log(Object s, String color) {
         s = s.toString();
 
         // Get the current time in HH:mm:ss format
