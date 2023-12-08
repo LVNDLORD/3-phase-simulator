@@ -79,13 +79,11 @@ public class Simulation extends Engine {
             case ARR:
                 ServicePoint sp = getShortestQueue();
                 sp.addToQueue(new Customer());
-                arrivalProcess.generateNextEvent(); // generate next arrival
+                arrivalProcess.generateNextEvent();
                 break;
-
             case DEP:
-                a = servicePoints[0].removeFromQueue(); // removing customer from the second service point
-                // when departure from the second service point is generated
-                a.setRemovalTime(Clock.getInstance().getClock()); // setting the removal time for the customer from the system
+                a = e.getServicePoint().removeFromQueue();
+                a.setRemovalTime(Clock.getInstance().getClock());
                 a.reportResults();
                 break;
         }
@@ -111,7 +109,7 @@ public class Simulation extends Engine {
         ServicePoint shortest = servicePoints[0];
 
         for (ServicePoint sp : servicePoints) {
-            if (sp.queueLength() > shortest.queueLength()) {
+            if (sp.queueLength() < shortest.queueLength()) {
                 shortest = sp;
             }
         }

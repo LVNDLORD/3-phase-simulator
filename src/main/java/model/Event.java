@@ -4,11 +4,22 @@ public class Event implements Comparable<Event> {
 
     private EventType type;
     private double time;
+    private ServicePoint sp;
 
 
     public Event(EventType type, double time) {
         this.type = type;
         this.time = time;
+    }
+
+    public Event(EventType type, double time, ServicePoint sp) {
+        this.type = type;
+        this.time = time;
+
+        // If event type - departure, record from which service point customer should departure
+        if (type == EventType.DEP) {
+            this.sp = sp;
+        }
     }
 
     public EventType getType() {
@@ -34,5 +45,9 @@ public class Event implements Comparable<Event> {
             return 1;
         }
         return 0;
+    }
+
+    public ServicePoint getServicePoint() {
+        return sp;
     }
 }

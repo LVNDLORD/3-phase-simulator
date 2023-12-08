@@ -57,7 +57,7 @@ public class ServicePoint {
 
         reserved = true;
         double serviceTime = generator.sample();
-        eventlist.add(new Event(eventTypeScheduled, Clock.getInstance().getClock() + serviceTime));
+        eventlist.add(new Event(eventTypeScheduled, Clock.getInstance().getClock() + serviceTime, this));
     }
 
     public boolean isReserved() {
@@ -80,4 +80,5 @@ public class ServicePoint {
         return queue.size();
     }
 
+    public String getName() { return name; }
 }
