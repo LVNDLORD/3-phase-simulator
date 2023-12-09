@@ -1,0 +1,32 @@
+.root {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 12px;
+    -fx-background-color: #f0f0f0;
+}
+
+#title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #333366;
+}
+
+#infoText {
+    -fx-font-size: 14px;
+    -fx-fill: #333333;
+}
+
+.grid {
+    -fx-padding: 20px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}
+
+.button {
+    -fx-background-color: #5c6bc0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #3949ab;
+}
