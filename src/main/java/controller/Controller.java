@@ -206,7 +206,7 @@ public class Controller {
             mean = Double.parseDouble(meanValueTextField.getText());
             variance = Double.parseDouble(varianceValueTextField.getText());
         } catch (Exception e) {
-            log("Time cannot be cast to integer " + simulationTimeComboBox.getValue());
+            log(meanLabel.getText() + " and " + varianceLabel.getText() + " values should be integers or double values");
             return;
         }
 
