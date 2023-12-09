@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <top>
         <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
     </top>
     <left>
-        <VBox alignment="TOP_CENTER" prefHeight="383.0" prefWidth="170.0" style="-fx-padding: 10px; -fx-font-family: Arial; -fx-font-size: 14px; -fx-margin: 10px;">
+        <VBox alignment="TOP_CENTER" prefHeight="533.0" prefWidth="209.0" style="-fx-padding: 10px; -fx-font-family: Arial; -fx-font-size: 14px; -fx-margin: 10px;">
             <children>
                 <Label style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Input: " />
                 <VBox prefHeight="48.0" prefWidth="150.0">
@@ -27,21 +34,27 @@
                     <children>
                         <Label prefHeight="19.0" prefWidth="132.0" text="Add a self-service desk" />
                         <Slider fx:id="selfServiceSlider" majorTickUnit="1" max="10" min="1" prefHeight="22.0" prefWidth="150.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
+                      <VBox prefHeight="141.0" prefWidth="189.0">
+                          <children>
+                              <Label prefHeight="33.0" prefWidth="134.0" text="Number of customers" />
+                              <Slider fx:id="numOfCustomersSlider" majorTickUnit="1000" max="10000" min="1000" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000" />
+                        <VBox prefHeight="60.0" prefWidth="189.0">
+                           <children>
+                              <Label text="Probability Distributions:" />
+                              <ComboBox fx:id="distributionComboBox" prefWidth="150.0">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin></ComboBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                          </children>
+                      </VBox>
                     </children>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0">
-                    <children>
-                        <Label prefHeight="33.0" prefWidth="134.0" text="Number of customers" />
-                        <Slider fx:id="numOfCustomersSlider" majorTickUnit="1000" max="10000" min="1000" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1000" />
-                    </children>
-                </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Probability Distributions:" />
-                  <ComboBox fx:id="distributionComboBox" prefWidth="150.0" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="86.0" prefWidth="150.0">
                <children>
                   <Label text="Simulation Time (h):" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -51,12 +64,67 @@
                   </HBox>
                </children>
             </VBox>
+            <VBox prefHeight="236.0" prefWidth="189.0">
+               <children>
+                  <VBox prefHeight="114.0" prefWidth="189.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="29.0" prefWidth="190.0" text="Service Point Values" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="8.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <HBox prefHeight="33.0" prefWidth="150.0">
+                           <children>
+                              <Label fx:id="SPmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean" />
+                              <TextField fx:id="meanSPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="150.0">
+                           <children>
+                               <Label fx:id="SPvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance" />
+                              <TextField fx:id="varianceSPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox prefHeight="103.0" prefWidth="159.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="189.0" text="Arrival Process Values">
+                           <padding>
+                              <Insets bottom="8.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Label>
+                        <HBox prefHeight="33.0" prefWidth="150.0">
+                           <children>
+                              <Label fx:id="APmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean" />
+                              <TextField fx:id="meanAPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="33.0" prefWidth="150.0">
+                           <children>
+                              <Label fx:id="APvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance" />
+                              <TextField fx:id="varianceAPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
 
             </children>
         </VBox>
     </left>
     <center>
-        <VBox>
+        <VBox prefHeight="471.0" prefWidth="730.0">
             <HBox style="-fx-margin: 10px;">
                 <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Visualisation:" />
                 <Pane HBox.hgrow="ALWAYS" /> <!-- Spacer -->
@@ -67,18 +135,18 @@
             <StackPane prefHeight="352.0" prefWidth="600.0" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 2px;"> <!-- Your simulation container -->
                 <!-- Simulation content goes here -->
                 <HBox alignment="BOTTOM_CENTER" spacing="10">
-                    <HBox fx:id="cashierContainer" alignment="BOTTOM_CENTER" spacing="10" minWidth="600">
+                    <HBox fx:id="cashierContainer" alignment="BOTTOM_CENTER" minWidth="600" spacing="10">
                     <!-- Cashier images will be added here dynamically based on slider value -->
                     </HBox>
                 </HBox>
             </StackPane>
             <Accordion fx:id="accordion" VBox.vgrow="ALWAYS">
                 <panes>
-                    <TitledPane text="Logs" expanded="true">
+                    <TitledPane expanded="true" text="Logs">
                         <content>
-                            <ScrollPane fx:id="logScrollPane" vbarPolicy="AS_NEEDED" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true">
+                            <ScrollPane fx:id="logScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
                                 <content>
-                                    <TextFlow fx:id="logTextFlow" prefWidth="300" prefHeight="200" />
+                                    <TextFlow fx:id="logTextFlow" prefHeight="200" prefWidth="300" />
                                 </content>
                             </ScrollPane>
                         </content>

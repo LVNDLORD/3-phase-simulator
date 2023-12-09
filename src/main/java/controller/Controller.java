@@ -14,10 +14,13 @@ import javafx.scene.text.TextFlow;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 public class Controller {
+
+
     @FXML
     private Slider cashierSlider;
     @FXML
@@ -31,6 +34,22 @@ public class Controller {
     private ComboBox<String> distributionComboBox;
     @FXML
     private ComboBox<String> simulationTimeComboBox;
+    @FXML
+    private TextField meanSPDistValueTextField;
+    @FXML
+    private TextField varianceSPDistValueTextField;
+    @FXML
+    private TextField meanAPDistValueTextField;
+    @FXML
+    private TextField varianceAPDistValueTextField;
+    @FXML
+    private Label SPvarianceLabel;
+    @FXML
+    private Label SPmeanLabel;
+    @FXML
+    private Label APvarianceLabel;
+    @FXML
+    private Label APmeanLabel;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -57,15 +76,47 @@ public class Controller {
         distributionComboBox.getItems().addAll("Normal", "Uniform", "Exponential");
         distributionComboBox.setValue(selectedDistribution); // Set default selection
 
+        distributionComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            updateLabelsWithDistribution(newValue);
+        });
+
         // Initialize the simulationTimeComboBox
         for (int hour = 1; hour <= 12; hour++) {
             simulationTimeComboBox.getItems().add(String.valueOf(hour));
         }
         simulationTimeComboBox.setValue("1"); // Set default selection
+
+
         // Set the "Logs" TitledPane to be expanded by default
         accordion.setExpandedPane(accordion.getPanes().get(0));
         // Bind the vvalue property of the ScrollPane to the height of the TextFlow
         logScrollPane.vvalueProperty().bind(logTextFlow.heightProperty());
+    }
+
+    private void updateLabelsWithDistribution(String selectedDistribution) {
+        switch (selectedDistribution) {
+            case "Uniform":
+                // If the selected distribution is "Uniform", update the labels
+                SPmeanLabel.setText("Min");
+                SPvarianceLabel.setText("Max");
+                APmeanLabel.setText("Min");
+                APvarianceLabel.setText("Max");
+                break;
+            case "Exponential":
+                // If the selected distribution is "Uniform", update the labels
+                SPmeanLabel.setText("Mean");
+                SPvarianceLabel.setText("Seed");
+                APmeanLabel.setText("Mean");
+                APvarianceLabel.setText("Seed");
+                break;
+            default: // Normal
+                // For other distributions, set the default label text
+                SPmeanLabel.setText("Mean");
+                SPvarianceLabel.setText("Variance");
+                APmeanLabel.setText("Mean");
+                APvarianceLabel.setText("Variance");
+                break;
+        }
     }
 
     private void updateCashierDesks(int count) {
@@ -104,7 +155,7 @@ public class Controller {
      *         failed
      */
     public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime,
-            Simulation.Distributions distribution) {
+            Simulation.Distributions distribution, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         if (servicePointsCount < 1) {
             log("Number of service points should be positive", RED);
             return false;
@@ -115,8 +166,20 @@ public class Controller {
             return false;
         }
 
+        if (distribution.equals(Simulation.Distributions.Exponential) && meanSP <= 0.0 ||
+                distribution.equals(Simulation.Distributions.Exponential) && meanAP <= 0.0) {
+            log("In the Exponential distribution both Mean values should be greater than 0", RED);
+            return false;
+        }
+
+        if (distribution.equals(Simulation.Distributions.Uniform) && meanSP > varianceSP ||
+                distribution.equals(Simulation.Distributions.Uniform) && meanAP > varianceAP) {
+            log("In the Uniform distribution both Max values should be greater than Min", RED);
+            return false;
+        }
+
         try {
-            sim = new Simulation(this, servicePointsCount, customersCount, distribution);
+            sim = new Simulation(this, servicePointsCount, customersCount, distribution, meanSP, varianceSP, meanAP, varianceAP);
             sim.setSimulationTime(simulationTime*60);
             sim.run();
             return true;
@@ -142,6 +205,7 @@ public class Controller {
                 break;
             case "Uniform":
                 distribution = Simulation.Distributions.Uniform;
+
                 break;
             case "Exponential":
                 distribution = Simulation.Distributions.Exponential;
@@ -152,16 +216,22 @@ public class Controller {
         }
 
         int time;
+        double meanSP, varianceSP, meanAP, varianceAP;
         try {
             time = Integer.parseInt(simulationTimeComboBox.getValue());
+            meanSP = Double.parseDouble(meanSPDistValueTextField.getText());
+            varianceSP = Double.parseDouble(varianceSPDistValueTextField.getText());
+            meanAP = Double.parseDouble(meanAPDistValueTextField.getText());
+            varianceAP = Double.parseDouble(varianceAPDistValueTextField.getText());
         } catch (Exception e) {
-            log("Time cannot be cast to integer " + simulationTimeComboBox.getValue());
+            log(SPmeanLabel.getText() + " and " + SPvarianceLabel.getText() + " values should be integers or double values");
+            System.out.println(e.getMessage());
             return;
         }
 
         int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
 
-        startSimulation(cashiersCount, customersCount, time, distribution);
+        startSimulation(cashiersCount, customersCount, time, distribution, meanSP, varianceSP, meanAP, varianceAP);
     }
 
     public void log(Object s) {
