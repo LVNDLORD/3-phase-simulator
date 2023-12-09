@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -60,14 +61,14 @@
                <children>
                   <HBox prefHeight="33.0" prefWidth="150.0">
                      <children>
-                        <Label fx:id="meanLabel" prefHeight="16.0" prefWidth="87.0" text="Mean" />
-                        <ComboBox fx:id="meanValueComboBox" prefHeight="26.0" prefWidth="85.0" />
+                        <Label fx:id="meanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean" />
+                        <TextField fx:id="meanValueTextField" prefHeight="26.0" prefWidth="64.0" />
                      </children>
                   </HBox>
                   <HBox prefHeight="33.0" prefWidth="150.0">
                      <children>
                          <Label fx:id="varianceLabel" prefHeight="16.0" prefWidth="106.0" text="Variance" />
-                        <ComboBox fx:id="varianceValueComboBox" prefHeight="26.0" prefWidth="105.0" />
+                        <TextField fx:id="varianceValueTextField" prefHeight="26.0" prefWidth="62.0" />
                      </children>
                   </HBox>
                </children>

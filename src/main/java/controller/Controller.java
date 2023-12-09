@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 
 public class Controller {
 
@@ -34,9 +35,9 @@ public class Controller {
     @FXML
     private ComboBox<String> simulationTimeComboBox;
     @FXML
-    private ComboBox<String> meanValueComboBox;
+    private TextField meanValueTextField;
     @FXML
-    private ComboBox<String> varianceValueComboBox;
+    private TextField varianceValueTextField;
     @FXML
     private Label varianceLabel;
     @FXML
@@ -77,20 +78,6 @@ public class Controller {
         }
         simulationTimeComboBox.setValue("1"); // Set default selection
 
-
-
-
-        // Initialize the meanValueComboBox
-        for (int mean = 1; mean <= 15; mean++) {
-            meanValueComboBox.getItems().add(String.valueOf(mean));
-        }
-        meanValueComboBox.setValue("1"); // Set default selection
-
-        // Initialize the varianceValueComboBox
-        for (int variance = 1; variance <= 10; variance++) {
-            varianceValueComboBox.getItems().add(String.valueOf(variance));
-        }
-        varianceValueComboBox.setValue("1"); // Set default selection
 
         // Set the "Logs" TitledPane to be expanded by default
         accordion.setExpandedPane(accordion.getPanes().get(0));
@@ -206,8 +193,8 @@ public class Controller {
         double mean, variance;
         try {
             time = Integer.parseInt(simulationTimeComboBox.getValue());
-            mean = Double.parseDouble(meanValueComboBox.getValue());
-            variance = Double.parseDouble(varianceValueComboBox.getValue());
+            mean = Double.parseDouble(meanValueTextField.getText());
+            variance = Double.parseDouble(varianceValueTextField.getText());
         } catch (Exception e) {
             log("Time cannot be cast to integer " + simulationTimeComboBox.getValue());
             return;
