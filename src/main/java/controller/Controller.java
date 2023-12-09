@@ -37,6 +37,10 @@ public class Controller {
     private ComboBox<String> meanValueComboBox;
     @FXML
     private ComboBox<String> varianceValueComboBox;
+    @FXML
+    private Label varianceLabel;
+    @FXML
+    private Label meanLabel;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -63,6 +67,10 @@ public class Controller {
         distributionComboBox.getItems().addAll("Normal", "Uniform", "Exponential");
         distributionComboBox.setValue(selectedDistribution); // Set default selection
 
+        distributionComboBox.valueProperty().addListener((obs, oldValue, newValue) -> {
+            updateLabelsWithDistribution(newValue);
+        });
+
         // Initialize the simulationTimeComboBox
         for (int hour = 1; hour <= 12; hour++) {
             simulationTimeComboBox.getItems().add(String.valueOf(hour));
@@ -88,6 +96,26 @@ public class Controller {
         accordion.setExpandedPane(accordion.getPanes().get(0));
         // Bind the vvalue property of the ScrollPane to the height of the TextFlow
         logScrollPane.vvalueProperty().bind(logTextFlow.heightProperty());
+    }
+
+    private void updateLabelsWithDistribution(String selectedDistribution) {
+        switch (selectedDistribution) {
+            case "Uniform":
+                // If the selected distribution is "Uniform", update the labels
+                meanLabel.setText("Min");
+                varianceLabel.setText("Max");
+                break;
+            case "Exponential":
+                // If the selected distribution is "Uniform", update the labels
+                meanLabel.setText("Min");
+                varianceLabel.setText("Seed");
+                break;
+            default: // Normal
+                // For other distributions, set the default label text
+                meanLabel.setText("Mean");
+                varianceLabel.setText("Variance");
+                break;
+        }
     }
 
     private void updateCashierDesks(int count) {
