@@ -46,7 +46,7 @@ public class Simulation extends Engine {
                 apDist = new Normal(10, 7);
                 break;
             case Uniform:
-                // ! Max > min !
+                // ! Max > min!
                 spDist = new Uniform(1, 6); //min, max
                 apDist = new Uniform(2, 7); //min, max.
                 break;

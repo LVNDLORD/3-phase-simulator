@@ -152,6 +152,16 @@ public class Controller {
             return false;
         }
 
+        if (distribution.equals(Simulation.Distributions.Exponential) && mean <= 0.0) {
+            log("In the Exponential distribution mean value should be greater than 0", RED);
+            return false;
+        }
+
+        if (distribution.equals(Simulation.Distributions.Uniform) && mean > variance) {
+            log("In the Uniform distribution Max value should be greater than Min", RED);
+            return false;
+        }
+
         try {
             sim = new Simulation(this, servicePointsCount, customersCount, distribution, mean, variance);
             sim.setSimulationTime(simulationTime*60);
