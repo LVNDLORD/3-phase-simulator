@@ -32,7 +32,7 @@ public class Simulation extends Engine {
      * @param customersCount     ?
      * @param dist               Probability distribution type. Provided by eduni package
      */
-    public Simulation(Controller controller, int servicePointsCount, int customersCount, Distributions dist) {
+    public Simulation(Controller controller, int servicePointsCount, int customersCount, Distributions dist, double mean, double variance) {
         super();
         this.controller = controller;
 
@@ -42,17 +42,19 @@ public class Simulation extends Engine {
 
         switch (dist) {
             case Normal:
-                spDist = new Normal(10, 6);
+                spDist = new Normal(mean, variance);
                 apDist = new Normal(10, 7);
                 break;
             case Uniform:
-                spDist = new Uniform(1, 6);
-                apDist = new Uniform(2, 7);
+                // ! Max > min !
+                spDist = new Uniform(1, 6); //min, max
+                apDist = new Uniform(2, 7); //min, max.
                 break;
-            case Exponential:
-                spDist = new Negexp(10, 6);
-                apDist = new Negexp(10, 7);
-                break;
+                // temp comment for dev purpose, as second arg is type long
+//            case Exponential:
+//                spDist = new Negexp(10, 6);
+//                apDist = new Negexp(10, 7);
+//                break;
             default:
                 controller.log("Invalid distribution type: " + dist, controller.RED);
                 return;

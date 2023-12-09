@@ -18,6 +18,8 @@ import java.util.HashMap;
 import javafx.scene.control.ComboBox;
 
 public class Controller {
+
+
     @FXML
     private Slider cashierSlider;
     @FXML
@@ -31,6 +33,10 @@ public class Controller {
     private ComboBox<String> distributionComboBox;
     @FXML
     private ComboBox<String> simulationTimeComboBox;
+    @FXML
+    private ComboBox<String> meanValueComboBox;
+    @FXML
+    private ComboBox<String> varianceValueComboBox;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -62,6 +68,22 @@ public class Controller {
             simulationTimeComboBox.getItems().add(String.valueOf(hour));
         }
         simulationTimeComboBox.setValue("1"); // Set default selection
+
+
+
+
+        // Initialize the meanValueComboBox
+        for (int mean = 1; mean <= 15; mean++) {
+            meanValueComboBox.getItems().add(String.valueOf(mean));
+        }
+        meanValueComboBox.setValue("1"); // Set default selection
+
+        // Initialize the varianceValueComboBox
+        for (int variance = 1; variance <= 10; variance++) {
+            varianceValueComboBox.getItems().add(String.valueOf(variance));
+        }
+        varianceValueComboBox.setValue("1"); // Set default selection
+
         // Set the "Logs" TitledPane to be expanded by default
         accordion.setExpandedPane(accordion.getPanes().get(0));
         // Bind the vvalue property of the ScrollPane to the height of the TextFlow
@@ -104,7 +126,7 @@ public class Controller {
      *         failed
      */
     public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime,
-            Simulation.Distributions distribution) {
+            Simulation.Distributions distribution, double mean, double variance) {
         if (servicePointsCount < 1) {
             log("Number of service points should be positive", RED);
             return false;
@@ -116,7 +138,7 @@ public class Controller {
         }
 
         try {
-            sim = new Simulation(this, servicePointsCount, customersCount, distribution);
+            sim = new Simulation(this, servicePointsCount, customersCount, distribution, mean, variance);
             sim.setSimulationTime(simulationTime*60);
             sim.run();
             return true;
@@ -142,6 +164,7 @@ public class Controller {
                 break;
             case "Uniform":
                 distribution = Simulation.Distributions.Uniform;
+
                 break;
             case "Exponential":
                 distribution = Simulation.Distributions.Exponential;
@@ -152,8 +175,11 @@ public class Controller {
         }
 
         int time;
+        double mean, variance;
         try {
             time = Integer.parseInt(simulationTimeComboBox.getValue());
+            mean = Double.parseDouble(meanValueComboBox.getValue());
+            variance = Double.parseDouble(varianceValueComboBox.getValue());
         } catch (Exception e) {
             log("Time cannot be cast to integer " + simulationTimeComboBox.getValue());
             return;
@@ -161,7 +187,7 @@ public class Controller {
 
         int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
 
-        startSimulation(cashiersCount, customersCount, time, distribution);
+        startSimulation(cashiersCount, customersCount, time, distribution, mean, variance);
     }
 
     public void log(Object s) {
