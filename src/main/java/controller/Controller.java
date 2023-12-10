@@ -29,42 +29,46 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import view.*;
 
+/**
+ * Controller for the Supermarket Queue Simulator application.
+ * This class manages the user interface interactions, updating the simulation based on user inputs,
+ * and reflecting the simulation's state on the UI.
+ */
 public class Controller implements QueueUpdateListener {
 
-
+    // FXML annotated fields for JavaFX components
     @FXML
-    private Slider cashierSlider;
-    @FXML
-    private HBox cashierContainer; // The container for cashier images
+    private Slider cashierSlider; // Slider to adjust the number of cashiers.
     // Reference to the log TextArea in the "Logs" section
     @FXML
-    private Slider numOfCustomersSlider;
+    private Slider numOfCustomersSlider;  // Slider to set the number of customers in the simulation.
     @FXML
-    private TextArea logTextArea;
+    private TextArea logTextArea; // TextArea for logging simulation events and messages.
     @FXML
-    private ComboBox<String> distributionComboBox;
+    private ComboBox<String> distributionComboBox; // ComboBox to select the probability distribution type.
     @FXML
-    private ComboBox<String> simulationTimeComboBox;
+    private ComboBox<String> simulationTimeComboBox; // ComboBox to choose the duration of the simulation.
     @FXML
-    private TextField meanSPDistValueTextField;
+    private TextField meanSPDistValueTextField; // TextField for inputting the mean of the service point distribution.
     @FXML
-    private TextField varianceSPDistValueTextField;
+    private TextField varianceSPDistValueTextField; // TextField for inputting the variance of the service point distribution.
     @FXML
-    private TextField meanAPDistValueTextField;
+    private TextField meanAPDistValueTextField; // TextField for inputting the mean of the arrival process distribution.
     @FXML
-    private TextField varianceAPDistValueTextField;
+    private TextField varianceAPDistValueTextField; // TextField for inputting the variance of the arrival process distribution.
     @FXML
-    private Label SPvarianceLabel;
+    private Label SPvarianceLabel; // Label for displaying service point variance.
     @FXML
-    private Label SPmeanLabel;
+    private Label SPmeanLabel; // Label for displaying service point mean.
     @FXML
-    private Label APvarianceLabel;
+    private Label APvarianceLabel; // Label for displaying arrival process variance.
     @FXML
-    private Label APmeanLabel;
+    private Label APmeanLabel; // Label for displaying arrival process mean.
     @FXML
-    private Button helpButton;
+    private Button helpButton; // Button to display help and information about the simulation.
     @FXML
-    private GridPane cashierGrid;
+    private GridPane cashierGrid; // GridPane for arranging cashier elements in the UI.
+
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -75,14 +79,17 @@ public class Controller implements QueueUpdateListener {
     @FXML
     private Accordion accordion;
     public static final String RED = "\033[0;31m";
-    private Map<Integer, Label> cashierLabels = new HashMap<>();
+    private Map<Integer, Label> cashierLabels = new HashMap<>(); // Map to link cashier number with their respective UI label.
 
-    private Simulation sim;
+    private Simulation sim; // Instance of the simulation model.
 
     public Controller() {
         log("Controller initialized");
     }
 
+    /**
+     * Initializes the controller. This method is automatically called after the FXML fields are injected.
+     */
     public void initialize() {
         initializeCashierGrid();
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
@@ -111,6 +118,13 @@ public class Controller implements QueueUpdateListener {
         helpButton.setOnAction(event -> openInfo());
     }
 
+    /**
+     * Updates the labels for distribution parameters based on the selected distribution type.
+     * This method changes the text of labels to reflect the correct parameter names for the chosen distribution.
+     *
+     * @param selectedDistribution The type of distribution selected by the user.
+     *                             Expected values are "Uniform", "Exponential", and "Normal".
+     */
     private void updateLabelsWithDistribution(String selectedDistribution) {
         switch (selectedDistribution) {
             case "Uniform":
@@ -154,6 +168,12 @@ public class Controller implements QueueUpdateListener {
             e.printStackTrace(); //
         }
     }
+
+    /**
+     * Initializes the cashier grid layout for the simulation.
+     * This method sets up the grid layout with a specific number of rows and columns
+     * and adds a cashier box to each cell of the grid.
+     */
     private void initializeCashierGrid() {
         int rows = 3; // Assuming 3 rows
         int cols = 3; // Assuming 3 columns
@@ -166,6 +186,17 @@ public class Controller implements QueueUpdateListener {
             }
         }
     }
+
+
+    /**
+     * Updates the visual status of a cashier desk in the simulation grid.
+     * This method changes the border color of the cashier box to indicate whether
+     * it is active or not.
+     *
+     * @param row       The row of the cashier desk in the grid.
+     * @param col       The column of the cashier desk in the grid.
+     * @param isActive  Indicates whether the cashier desk is active.
+     */
     private void updateCashierStatus(int row, int col, boolean isActive) {
         VBox cashierBox = (VBox) getNodeFromGridPane(cashierGrid, col, row);
         if (cashierBox != null) {
@@ -174,7 +205,14 @@ public class Controller implements QueueUpdateListener {
         }
     }
 
-
+    /**
+     * Creates and returns a VBox representing a cashier desk.
+     * This method constructs the visual representation of a cashier desk, including
+     * an image and a label for queue information.
+     *
+     * @param cashierNumber The identifier for the cashier desk.
+     * @return VBox representing a cashier desk.
+     */
     private VBox createCashierBox(int cashierNumber) {
         ImageView cashierView = new ImageView(new Image("/cashier.png"));
         cashierView.setFitHeight(50); // Adjust size as needed
@@ -194,6 +232,15 @@ public class Controller implements QueueUpdateListener {
         return cashierBox;
     }
 
+    /**
+     * Updates the information displayed on a cashier's label in the UI.
+     * This method is called whenever there is a change in the queue size or the number of served customers
+     * at a specific cashier desk. It ensures that the update is performed on the JavaFX Application Thread.
+     *
+     * @param cashierNumber    The identifier for the cashier desk being updated.
+     * @param queueLength      The current number of customers in the queue at the cashier desk.
+     * @param servedCustomers  The total number of customers served by the cashier desk so far.
+     */
     @Override
     public void updateQueueInfo(int cashierNumber, int queueLength, int servedCustomers) {
         Platform.runLater(() -> {
@@ -204,6 +251,11 @@ public class Controller implements QueueUpdateListener {
             }
         });
     }
+    /**
+     * Updates the display of cashier desks based on the number of active cashiers.
+     *
+     * @param activeCount The number of active cashier desks to display.
+     */
     private void updateCashierDesks(int activeCount) {
         int rows = 3; // Assuming 3 rows
         int cols = 3; // Assuming 3 columns
@@ -216,7 +268,16 @@ public class Controller implements QueueUpdateListener {
         }
     }
 
-
+    /**
+     * Retrieves a specific node from a GridPane based on its column and row indices.
+     * This method iterates through all children of the GridPane and returns the node
+     * that matches the specified column and row. If no matching node is found, it returns null.
+     *
+     * @param gridPane The GridPane from which the node is to be retrieved.
+     * @param col      The column index of the node to be retrieved.
+     * @param row      The row index of the node to be retrieved.
+     * @return The node at the specified column and row indices, or null if no such node exists.
+     */
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getColumnIndex(node) != null && GridPane.getColumnIndex(node) == col &&
@@ -277,7 +338,9 @@ public class Controller implements QueueUpdateListener {
     }
 
     /**
-     * Runs when user clicks start button. Fetches input values and passes them to <em>startSimulation</em>
+     * Starts the simulation based on the current settings and user inputs.
+     *
+     * @param mouseEvent The mouse event triggering the start of the simulation.
      */
     @FXML
     public void start(MouseEvent mouseEvent) {
@@ -322,6 +385,13 @@ public class Controller implements QueueUpdateListener {
         updateCashierDesks(0);
     }
 
+    /**
+     * Logs a message to the console and the application's log text flow.
+     * The message is prefixed with the current system time in HH:mm:ss format.
+     * If the log text flow is available, the message is also added to it.
+     *
+     * @param s The message to be logged. It can be of any object type and will be converted to a string.
+     */
     public void log(Object s) {
         s = s.toString();
 
@@ -336,6 +406,14 @@ public class Controller implements QueueUpdateListener {
         }
     }
 
+    /**
+     * Logs a message to the console and the application's log text flow with color.
+     * The message is prefixed with the current system time in HH:mm:ss format.
+     * If the log text flow is available, the message is also added to it with the specified color.
+     *
+     * @param s     The message to be logged. It can be of any object type and will be converted to a string.
+     * @param color The color in which the message should be logged. Should match the color constants defined.
+     */
     public void log(Object s, String color) {
         s = s.toString();
 
