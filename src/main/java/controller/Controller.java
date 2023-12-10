@@ -3,12 +3,16 @@ package controller;
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -55,6 +59,8 @@ public class Controller {
     private Label APmeanLabel;
     @FXML
     private Button helpButton;
+    @FXML
+    private GridPane cashierGrid;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -73,6 +79,7 @@ public class Controller {
     }
 
     public void initialize() {
+        initializeCashierGrid();
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
         });
@@ -142,35 +149,63 @@ public class Controller {
             e.printStackTrace(); //
         }
     }
+    private void initializeCashierGrid() {
+        int rows = 3; // Assuming 3 rows
+        int cols = 3; // Assuming 3 columns
 
-    /**
-     * Updates the display of cashier desks based on the specified count.
-     * Clears any existing cashier images and adds the specified number of cashier images to the cashier container.
-     *
-     * @param count The number of cashier desks to display.
-     */
-    private void updateCashierDesks(int count) {
-        cashierContainer.getChildren().clear(); // Clear existing cashiers
-
-        for (int i = 0; i < count; i++) {
-            try {
-                InputStream is = getClass().getResourceAsStream("/cashier.png");
-                if (is == null) {
-                    log("InputStream is null - Image not found.", RED);
-                    continue; // Skip this iteration if the image is not found
-                }
-
-                Image cashierImage = new Image(is);
-                ImageView imageView = new ImageView(cashierImage);
-                imageView.setFitHeight(100);
-                imageView.setFitWidth(50);
-                imageView.setPreserveRatio(true);
-                cashierContainer.getChildren().add(imageView);
-            } catch (Exception e) {
-                log("Exception occurred: " + e.getMessage(), RED);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                VBox cashierBox = createCashierBox();
+                cashierGrid.add(cashierBox, col, row);
             }
         }
     }
+    private void updateCashierStatus(int row, int col, boolean isActive) {
+        VBox cashierBox = (VBox) getNodeFromGridPane(cashierGrid, col, row);
+        if (cashierBox != null) {
+            String borderColor = isActive ? "green" : "red";
+            cashierBox.setStyle("-fx-border-color: " + borderColor + "; -fx-border-width: 2; -fx-padding: 5;");
+        }
+    }
+
+
+    private VBox createCashierBox() {
+        ImageView cashierView = new ImageView(new Image("/cashier.png"));
+        cashierView.setFitHeight(50); // Adjust size as needed
+        cashierView.setFitWidth(50);
+
+        VBox cashierBox = new VBox(cashierView);
+        cashierBox.setAlignment(Pos.CENTER);
+        cashierBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5;");
+
+        return cashierBox;
+    }
+    private void updateCashierDesks(int activeCount) {
+        int rows = 3; // Assuming 3 rows
+        int cols = 3; // Assuming 3 columns
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                boolean isActive = (row * cols + col) < activeCount;
+                updateCashierStatus(row, col, isActive);
+            }
+        }
+    }
+
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) != null && GridPane.getColumnIndex(node) == col &&
+                    GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+
+
+
 
     /**
      * Attempts to launch simulation (model) with given parameters.
@@ -262,6 +297,7 @@ public class Controller {
         int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
 
         startSimulation(cashiersCount, customersCount, time, distribution, meanSP, varianceSP, meanAP, varianceAP);
+        updateCashierDesks(0);
     }
 
     public void log(Object s) {
