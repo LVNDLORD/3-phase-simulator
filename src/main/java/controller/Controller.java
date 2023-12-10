@@ -143,7 +143,12 @@ public class Controller {
         }
     }
 
-
+    /**
+     * Updates the display of cashier desks based on the specified count.
+     * Clears any existing cashier images and adds the specified number of cashier images to the cashier container.
+     *
+     * @param count The number of cashier desks to display.
+     */
     private void updateCashierDesks(int count) {
         cashierContainer.getChildren().clear(); // Clear existing cashiers
 
