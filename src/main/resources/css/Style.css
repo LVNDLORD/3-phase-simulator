@@ -30,3 +30,10 @@
 .button:hover {
     -fx-background-color: #3949ab;
 }
+.info-button {
+    -fx-background-radius: 15;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+}

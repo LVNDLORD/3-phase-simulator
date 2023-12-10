@@ -3,6 +3,7 @@ package controller;
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,12 +12,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import view.*;
 
 public class Controller {
 
@@ -50,6 +53,8 @@ public class Controller {
     private Label APvarianceLabel;
     @FXML
     private Label APmeanLabel;
+    @FXML
+    private Button helpButton;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -91,6 +96,7 @@ public class Controller {
         accordion.setExpandedPane(accordion.getPanes().get(0));
         // Bind the vvalue property of the ScrollPane to the height of the TextFlow
         logScrollPane.vvalueProperty().bind(logTextFlow.heightProperty());
+        helpButton.setOnAction(event -> openInfo());
     }
 
     private void updateLabelsWithDistribution(String selectedDistribution) {
@@ -118,6 +124,25 @@ public class Controller {
                 break;
         }
     }
+    /**
+     * Opens the information window for the supermarket queue simulation.
+     */
+    @FXML
+    private void openInfo() {
+        try {
+            Stage infoStage = new Stage();
+            infoStage.setTitle("Supermarket Simulation Info");
+
+            SupermarketQueueSimulationInfo infoView = new SupermarketQueueSimulationInfo();
+            Scene scene = infoView.createInfoScene();
+
+            infoStage.setScene(scene);
+            infoStage.show();
+        } catch (Exception e) {
+            e.printStackTrace(); //
+        }
+    }
+
 
     private void updateCashierDesks(int count) {
         cashierContainer.getChildren().clear(); // Clear existing cashiers

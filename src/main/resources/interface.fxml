@@ -155,11 +155,14 @@
             </Accordion>
         </VBox>
     </center>
-   <right>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Output:" />
-         </children>
-      </VBox>
-   </right>
+    <right>
+        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Output:" />
+                <StackPane alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                    <Button fx:id="helpButton" text="?" styleClass="info-button" onMouseClicked="#openInfo"/>
+                </StackPane>
+            </children>
+        </VBox>
+    </right>
 </BorderPane>
