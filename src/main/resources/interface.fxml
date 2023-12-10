@@ -28,7 +28,7 @@
                 <VBox prefHeight="48.0" prefWidth="150.0">
                     <children>
                         <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier" />
-                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="10" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
+                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="9" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
                     </children>
                 </VBox>
                 <VBox prefHeight="200.0" prefWidth="100.0">

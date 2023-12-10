@@ -78,6 +78,7 @@ public class Simulation extends Engine {
     }
 
     protected void runEvent(Event e) {
+        ServicePoint currentSP;
         Customer a;
 
         switch (e.getType()) {
@@ -87,24 +88,20 @@ public class Simulation extends Engine {
                 arrivalProcess.generateNextEvent();
                 break;
             case DEP:
-                a = e.getServicePoint().removeFromQueue();
-                a.setRemovalTime(Clock.getInstance().getClock());
-                a.reportResults();
+                currentSP = e.getServicePoint();
+                if (currentSP != null) {
+                    a = currentSP.removeFromQueue();
+                    a.setRemovalTime(Clock.getInstance().getClock());
+                    a.reportResults();
+                    // Update both queue size and served customers using a single method
+                    int spNumber = currentSP.getCashierNumber();
+                    controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
+                } else {
+                    // Handle the case where currentSP is null, log an error
+                    System.out.println("Error: ServicePoint is null for DEP event at time " + e.getTime());
+                }
                 break;
         }
-        ServicePoint currentSP = e.getServicePoint();
-        if (currentSP != null) {
-            int spNumber = currentSP.getCashierNumber();
-            controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
-        } else {
-            // Handle the case where currentSP is null, log an error
-            System.out.println("Error: ServicePoint is null for event " + e);
-        }
-        int spNumber = currentSP.getCashierNumber();
-
-        // Update both queue size and served customers using a single method
-        controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
-
 
     }
 
