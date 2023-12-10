@@ -32,14 +32,14 @@ public class Simulation extends Engine {
      * @param customersCount     ?
      * @param dist               Probability distribution type. Provided by eduni package
      */
-    public Simulation(Controller controller, int servicePointsCount, int customersCount,
-                      Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
+    public  Simulation(Controller controller, int servicePointsCount, int customersCount,
+                       Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         super();
         this.controller = controller;
-
         // Create distributions
-        ContinuousGenerator spDist;
-        ContinuousGenerator apDist;
+        ContinuousGenerator spDist = new Normal(0, 1); // Default to Normal distribution with mean 0 and variance 1
+        ContinuousGenerator apDist = new Normal(0, 1);
+
 
         switch (dist) {
             case Normal:
@@ -68,9 +68,8 @@ public class Simulation extends Engine {
         servicePoints = new ServicePoint[servicePointsCount];
 
         for (int i=0; i<servicePointsCount; i++) {
-            servicePoints[i] = new ServicePoint("Cashier desk " + (i+1), spDist, eventlist, EventType.DEP);
+            servicePoints[i] = new ServicePoint("Cashier desk " + (i + 1), spDist, eventlist, EventType.DEP, controller::updateQueueInfo, i);
         }
-
         arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
     }
 
@@ -93,6 +92,20 @@ public class Simulation extends Engine {
                 a.reportResults();
                 break;
         }
+        ServicePoint currentSP = e.getServicePoint();
+        if (currentSP != null) {
+            int spNumber = currentSP.getCashierNumber();
+            controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
+        } else {
+            // Handle the case where currentSP is null, log an error
+            System.out.println("Error: ServicePoint is null for event " + e);
+        }
+        int spNumber = currentSP.getCashierNumber();
+
+        // Update both queue size and served customers using a single method
+        controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
+
+
     }
 
     protected void tryCEvents() {

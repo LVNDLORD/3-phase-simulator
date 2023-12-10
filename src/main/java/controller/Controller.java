@@ -2,6 +2,7 @@ package controller;
 
 import java.io.InputStream;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,15 +18,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import model.QueueUpdateListener;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import view.*;
 
-public class Controller {
+public class Controller implements QueueUpdateListener {
 
 
     @FXML
@@ -71,6 +75,7 @@ public class Controller {
     @FXML
     private Accordion accordion;
     public static final String RED = "\033[0;31m";
+    private Map<Integer, Label> cashierLabels = new HashMap<>();
 
     private Simulation sim;
 
@@ -155,7 +160,8 @@ public class Controller {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                VBox cashierBox = createCashierBox();
+                int cashierNumber = row * cols + col;
+                VBox cashierBox = createCashierBox(cashierNumber);
                 cashierGrid.add(cashierBox, col, row);
             }
         }
@@ -169,7 +175,7 @@ public class Controller {
     }
 
 
-    private VBox createCashierBox() {
+    private VBox createCashierBox(int cashierNumber) {
         ImageView cashierView = new ImageView(new Image("/cashier.png"));
         cashierView.setFitHeight(50); // Adjust size as needed
         cashierView.setFitWidth(50);
@@ -178,11 +184,25 @@ public class Controller {
         Label queueInfo = new Label("Queue: 0 | Served: 0");
         queueInfo.setAlignment(Pos.CENTER);
 
+        // Store the label in the map
+        cashierLabels.put(cashierNumber, queueInfo);
+
         VBox cashierBox = new VBox(10, cashierView, queueInfo); // 10 is the spacing between cashier image and queue info
         cashierBox.setAlignment(Pos.CENTER);
         cashierBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5;");
 
         return cashierBox;
+    }
+
+    @Override
+    public void updateQueueInfo(int cashierNumber, int queueLength, int servedCustomers) {
+        Platform.runLater(() -> {
+            Label label = cashierLabels.get(cashierNumber);
+            if (label != null) {
+                String text = "Queue: " + queueLength + " | Served: " + servedCustomers;
+                label.setText(text);
+            }
+        });
     }
     private void updateCashierDesks(int activeCount) {
         int rows = 3; // Assuming 3 rows
@@ -206,8 +226,6 @@ public class Controller {
         }
         return null;
     }
-
-
 
 
 
