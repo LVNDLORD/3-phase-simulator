@@ -174,7 +174,11 @@ public class Controller {
         cashierView.setFitHeight(50); // Adjust size as needed
         cashierView.setFitWidth(50);
 
-        VBox cashierBox = new VBox(cashierView);
+        // Create a label for queue info
+        Label queueInfo = new Label("Queue: 0 | Served: 0");
+        queueInfo.setAlignment(Pos.CENTER);
+
+        VBox cashierBox = new VBox(10, cashierView, queueInfo); // 10 is the spacing between cashier image and queue info
         cashierBox.setAlignment(Pos.CENTER);
         cashierBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5;");
 
