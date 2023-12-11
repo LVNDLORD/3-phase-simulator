@@ -18,6 +18,7 @@ public class Simulation extends Engine {
     private ServicePoint[] servicePoints;
 
     private final Controller controller;
+    private int customersServed;
 
     public enum Distributions {
         Normal,
@@ -85,8 +86,11 @@ public class Simulation extends Engine {
                 a = e.getServicePoint().removeFromQueue();
                 a.setRemovalTime(Clock.getInstance().getClock());
                 a.reportResults();
+                customersServed += 1;
                 break;
         }
+
+        controller.updateView(servicePoints, customersServed);
     }
 
     protected void tryCEvents() {
@@ -100,9 +104,8 @@ public class Simulation extends Engine {
     }
 
     protected void results() {
-        System.out.printf("\nSimulation ended at %.2f\n", Clock.getInstance().getClock());
-        System.out.println("Total customers served: " + servicePoints[0].getServedCustomers());
-        //System.out.printf("Average service time: %.2f\n", servicePoint[0].getMeanServiceTime());
+        controller.log("Simulation ended at " + (int)Clock.getInstance().getClock());
+        controller.log ("Total customers served: " + customersServed);
     }
 
     private ServicePoint getShortestQueue() {

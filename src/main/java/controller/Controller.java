@@ -11,10 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import model.Clock;
+import model.ServicePoint;
 import model.Simulation;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
+
 import javafx.scene.control.ComboBox;
 
 public class Controller {
@@ -162,6 +166,16 @@ public class Controller {
         int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
 
         startSimulation(cashiersCount, customersCount, time, distribution);
+    }
+
+    public void updateView(ServicePoint[] servicePoints, int customersServed) {
+        double time = Clock.getInstance().getClock();
+
+        for (int i=0; i<servicePoints.length; i++) {
+            ServicePoint sp = servicePoints[i];
+            sp.queueLength();
+            sp.isReserved();
+        }
     }
 
     public void log(Object s) {
