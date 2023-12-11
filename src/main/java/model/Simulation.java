@@ -33,26 +33,32 @@ public class Simulation extends Engine {
      * @param customersCount     ?
      * @param dist               Probability distribution type. Provided by eduni package
      */
-    public Simulation(Controller controller, int servicePointsCount, int customersCount, Distributions dist) {
+    public  Simulation(Controller controller, int servicePointsCount, int customersCount,
+                       Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         super();
         this.controller = controller;
-
         // Create distributions
-        ContinuousGenerator spDist;
-        ContinuousGenerator apDist;
+        ContinuousGenerator spDist = new Normal(0, 1); // Default to Normal distribution with mean 0 and variance 1
+        ContinuousGenerator apDist = new Normal(0, 1);
+
 
         switch (dist) {
             case Normal:
-                spDist = new Normal(10, 6);
-                apDist = new Normal(10, 7);
+                // double mean, variance
+                spDist = new Normal(meanSP, varianceSP);
+                apDist = new Normal(meanAP, varianceAP);
                 break;
             case Uniform:
-                spDist = new Uniform(1, 6);
-                apDist = new Uniform(2, 7);
+                // ! Max > min!
+                // double min, max
+                spDist = new Uniform(meanSP, varianceSP); //min, max
+                apDist = new Uniform(meanAP, varianceAP); //min, max.
                 break;
+                // temp comment for dev purpose, as second arg is type long
             case Exponential:
-                spDist = new Negexp(10, 6);
-                apDist = new Negexp(10, 7);
+                // double mean, long seed
+                spDist = new Negexp(meanSP, (long) varianceSP);
+                apDist = new Negexp(meanAP, (long) varianceAP);
                 break;
             default:
                 controller.log("Invalid distribution type: " + dist, controller.RED);
@@ -63,7 +69,7 @@ public class Simulation extends Engine {
         servicePoints = new ServicePoint[servicePointsCount];
 
         for (int i=0; i<servicePointsCount; i++) {
-            servicePoints[i] = new ServicePoint("Cashier desk " + (i+1), spDist, eventlist, EventType.DEP);
+            servicePoints[i] = new ServicePoint("Cashier desk " + (i + 1), spDist, eventlist, EventType.DEP, controller::updateQueueInfo, i);
         }
 
         arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
@@ -74,6 +80,7 @@ public class Simulation extends Engine {
     }
 
     protected void runEvent(Event e) {
+        ServicePoint currentSP;
         Customer a;
 
         switch (e.getType()) {
@@ -83,10 +90,19 @@ public class Simulation extends Engine {
                 arrivalProcess.generateNextEvent();
                 break;
             case DEP:
-                a = e.getServicePoint().removeFromQueue();
-                a.setRemovalTime(Clock.getInstance().getClock());
-                a.reportResults();
-                customersServed += 1;
+                currentSP = e.getServicePoint();
+                if (currentSP != null) {
+                    a = currentSP.removeFromQueue();
+                    a.setRemovalTime(Clock.getInstance().getClock());
+                    a.reportResults();
+                    // Update both queue size and served customers using a single method
+                    int spNumber = currentSP.getCashierNumber();
+                    controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
+                    customersServed += 1;
+                } else {
+                    // Handle the case where currentSP is null, log an error
+                    System.out.println("Error: ServicePoint is null for DEP event at time " + e.getTime());
+                }
                 break;
         }
 

@@ -18,6 +18,9 @@ public class Event implements Comparable<Event> {
 
         // If event type - departure, record from which service point customer should departure
         if (type == EventType.DEP) {
+            if (sp == null) {
+                throw new IllegalArgumentException("ServicePoint cannot be null for DEP events");
+            }
             this.sp = sp;
         }
     }

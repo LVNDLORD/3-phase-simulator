@@ -10,6 +10,8 @@ public class ServicePoint {
     private static String WHITE = "\u001B[37m";
     private LinkedList<Customer> queue;
 
+    private int cashierNumber; // Identifier for this service point
+
     private ContinuousGenerator generator;
 
     private EventList eventlist;
@@ -24,7 +26,10 @@ public class ServicePoint {
 
     private boolean reserved = false;
 
-    public ServicePoint(String name, ContinuousGenerator g, EventList tl, EventType type) {
+    private QueueUpdateListener queueUpdateListener;
+
+
+    public ServicePoint(String name, ContinuousGenerator g, EventList tl, EventType type, QueueUpdateListener listener, int cashierNumber) {
         this.generator = g;
         this.eventlist = tl;
         this.eventTypeScheduled = type;
@@ -33,21 +38,31 @@ public class ServicePoint {
         this.serviceTimeSum = 0;
         this.servedCustomers = 0;
 
+        this.queueUpdateListener = listener;
+        this.cashierNumber = cashierNumber;
+
         queue = new LinkedList<>();
     }
 
     public void addToQueue(Customer a) {
         queue.addFirst(a);
+        if (queueUpdateListener != null) {
+            queueUpdateListener.updateQueueInfo(cashierNumber, queue.size(), getServedCustomers());
+        }
     }
 
     public Customer removeFromQueue() {
         if (!queue.isEmpty()) {
             Customer a = queue.removeLast();
             servedCustomers++;
-            reserved = false; // free the service point
+            reserved = false;
+            if (queueUpdateListener != null) {
+                queueUpdateListener.updateQueueInfo(cashierNumber, queue.size(), servedCustomers);
+            }
             return a;
-        } else
+        } else {
             return null;
+        }
     }
 
     public void beginService() {
@@ -62,6 +77,10 @@ public class ServicePoint {
 
     public boolean isReserved() {
         return reserved;
+    }
+
+    public int getCashierNumber() {
+        return cashierNumber;
     }
 
     public double getMeanServiceTime() {
