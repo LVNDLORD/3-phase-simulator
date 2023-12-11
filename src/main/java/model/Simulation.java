@@ -30,10 +30,9 @@ public class Simulation extends Engine implements Runnable {
      * Simulation constructor
      * @param controller         Controller of the application
      * @param servicePointsCount Number of cashier desks to initialize
-     * @param customersCount     ?
      * @param dist               Probability distribution type. Provided by eduni package
      */
-    public  Simulation(Controller controller, int servicePointsCount, int customersCount,
+    public  Simulation(Controller controller, int servicePointsCount,
                        Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         super();
         this.controller = controller;

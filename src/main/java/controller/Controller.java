@@ -45,8 +45,6 @@ public class Controller implements QueueUpdateListener {
     private Slider cashierSlider; // Slider to adjust the number of cashiers.
     // Reference to the log TextArea in the "Logs" section
     @FXML
-    private Slider numOfCustomersSlider;  // Slider to set the number of customers in the simulation.
-    @FXML
     private TextArea logTextArea; // TextArea for logging simulation events and messages.
     @FXML
     private ComboBox<String> distributionComboBox; // ComboBox to select the probability distribution type.
@@ -296,9 +294,9 @@ public class Controller implements QueueUpdateListener {
 
     /**
      * Attempts to launch simulation (model) with given parameters.
-     * 
+     *
      * @param servicePointsCount Number of initial service points
-     * @param customersCount     Total number of customers to be served
+     *
      * @param simulationTime     For how long simulation should run (in simulation
      *                           time, not real time)
      * @param distribution       Distribution type. Possible values are "Normal",
@@ -306,7 +304,7 @@ public class Controller implements QueueUpdateListener {
      * @return Boolean value, indicating whether simulation launch succeeded or
      *         failed
      */
-    public boolean startSimulation(int servicePointsCount, int customersCount, int simulationTime,
+    public boolean startSimulation(int servicePointsCount, int simulationTime,
             Simulation.Distributions distribution, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         if (servicePointsCount < 1) {
             log("Number of service points should be positive", RED);
@@ -331,7 +329,7 @@ public class Controller implements QueueUpdateListener {
         }
 
         try {
-            sim = new Simulation(this, servicePointsCount, customersCount, distribution, meanSP, varianceSP, meanAP, varianceAP);
+            sim = new Simulation(this, servicePointsCount, distribution, meanSP, varianceSP, meanAP, varianceAP);
             sim.setSimulationTime(simulationTime*60);
 
             // Start simulation in new thread
@@ -389,9 +387,9 @@ public class Controller implements QueueUpdateListener {
             return;
         }
 
-        int customersCount = (int) Math.floor(numOfCustomersSlider.getValue());
 
-        startSimulation(cashiersCount, customersCount, time, distribution, meanSP, varianceSP, meanAP, varianceAP);
+
+        startSimulation(cashiersCount, time, distribution, meanSP, varianceSP, meanAP, varianceAP);
         updateCashierDesks(0);
     }
 
