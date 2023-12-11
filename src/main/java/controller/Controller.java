@@ -333,7 +333,13 @@ public class Controller implements QueueUpdateListener {
         try {
             sim = new Simulation(this, servicePointsCount, customersCount, distribution, meanSP, varianceSP, meanAP, varianceAP);
             sim.setSimulationTime(simulationTime*60);
-            sim.run();
+
+            // Start simulation in new thread
+            Thread thread = new Thread(sim);
+            thread.start();
+            thread.join();
+            int customersServed = sim.getCustomersServed();
+            outputResults(customersServed);
             return true;
         } catch (Exception e) {
             log("Failed to launch simulation. Error: " + e.getMessage(), RED);
@@ -389,14 +395,13 @@ public class Controller implements QueueUpdateListener {
         updateCashierDesks(0);
     }
 
-    public void updateView(ServicePoint[] servicePoints, int customersServed) {
-        double time = Clock.getInstance().getClock();
-
-        for (int i=0; i<servicePoints.length; i++) {
-            ServicePoint sp = servicePoints[i];
-            sp.queueLength();
-            sp.isReserved();
-        }
+    /**
+     * Outputs results of simulation run to the interface
+     * @param customersServed Total number of customers served during simulation run
+     */
+    public void outputResults(int customersServed) {
+        log("Simulation ended at " + (int)Clock.getInstance().getClock() + " mins");
+        log ("Total customers served: " + customersServed);
     }
 
     /**

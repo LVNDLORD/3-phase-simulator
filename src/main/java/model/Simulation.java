@@ -9,7 +9,7 @@ package model;
 import controller.Controller;
 import model.eduni.distributions.*;
 
-public class Simulation extends Engine {
+public class Simulation extends Engine implements Runnable {
     // Actual simulation body
     // Inform controller when simulation's state changes
 
@@ -105,8 +105,6 @@ public class Simulation extends Engine {
                 }
                 break;
         }
-
-        controller.updateView(servicePoints, customersServed);
     }
 
     protected void tryCEvents() {
@@ -119,11 +117,6 @@ public class Simulation extends Engine {
         }
     }
 
-    protected void results() {
-        controller.log("Simulation ended at " + (int)Clock.getInstance().getClock());
-        controller.log ("Total customers served: " + customersServed);
-    }
-
     private ServicePoint getShortestQueue() {
         ServicePoint shortest = servicePoints[0];
 
@@ -134,5 +127,9 @@ public class Simulation extends Engine {
         }
 
         return shortest;
+    }
+
+    public int getCustomersServed() {
+        return customersServed;
     }
 }
