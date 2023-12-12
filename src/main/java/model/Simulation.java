@@ -13,6 +13,14 @@ import model.eduni.distributions.*;
 
 import java.util.ArrayList;
 
+/**
+ * The Simulation class represents a queueing system simulation.
+ * It simulates a scenario with a specified number of service points (e.g., cashier desks) and
+ * customers arriving and being served. The service times and interarrival times are based on
+ * specified probability distributions. The simulation runs until a predefined number of customers
+ * are served, and calculates metrics like average waiting time.
+ * This class extends the Engine class and implements Runnable for execution in a thread.
+ */
 public class Simulation extends Engine implements Runnable {
     // Actual simulation body
     // Inform controller when simulation's state changes
@@ -33,10 +41,16 @@ public class Simulation extends Engine implements Runnable {
     }
 
     /**
-     * Simulation constructor
-     * @param controller         Controller of the application
-     * @param servicePointsCount Number of cashier desks to initialize
-     * @param dist               Probability distribution type. Provided by eduni package
+     * Constructs a Simulation instance.
+     * Initializes the service points and the arrival process based on specified distributions.
+     *
+     * @param controller         The controller for the application, used for logging and updating UI.
+     * @param servicePointsCount The number of service points (e.g., cashier desks) to simulate.
+     * @param dist               The type of probability distribution for service and arrival processes.
+     * @param meanSP             The mean for the service point distribution.
+     * @param varianceSP         The variance for the service point distribution.
+     * @param meanAP             The mean for the arrival process distribution.
+     * @param varianceAP         The variance for the arrival process distribution.
      */
     public  Simulation(Controller controller, int servicePointsCount,
                        Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
@@ -80,10 +94,19 @@ public class Simulation extends Engine implements Runnable {
         arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
     }
 
+    /**
+     * Initializes the simulation by generating the first arrival event.
+     */
     protected void initialize() {
         arrivalProcess.generateNextEvent();
     }
 
+    /**
+     * Processes a single event in the simulation.
+     * Depending on the event type (ARR for arrival, DEP for departure), it handles customer arrivals and departures.
+     *
+     * @param e The event to be processed in the simulation.
+     */
     protected void runEvent(Event e) {
         ServicePoint currentSP;
         Customer a;
@@ -114,6 +137,10 @@ public class Simulation extends Engine implements Runnable {
         }
     }
 
+    /**
+     * Tries conditional events (C-events) in the simulation.
+     * This method checks each service point and starts service if a service point is ready and there is a customer in the queue.
+     */
     protected void tryCEvents() {
         for (ServicePoint sp : servicePoints) {
             // C event - conditional
@@ -124,6 +151,12 @@ public class Simulation extends Engine implements Runnable {
         }
     }
 
+    /**
+     * Gets the service point with the shortest queue.
+     * This method is used to determine where a new customer should be added.
+     *
+     * @return The service point with the shortest queue.
+     */
     private ServicePoint getShortestQueue() {
         ServicePoint shortest = servicePoints[0];
 
@@ -136,10 +169,19 @@ public class Simulation extends Engine implements Runnable {
         return shortest;
     }
 
+    /**
+     * Gets the total number of customers served during the simulation.
+     *
+     * @return The number of customers served.
+     */
     public int getCustomersServed() {
         return customersServed;
     }
 
+    /**
+     * Ends the simulation, saves the results to a database, and logs the outcome.
+     * If the saving process fails, an error message is logged.
+     */
     public void end() {
         Dao dao = new Dao();
         Result result = new Result(servicePoints, customers, customersServed, Clock.getInstance().getClock());

@@ -302,6 +302,14 @@ public class Controller implements QueueUpdateListener {
         }
         return null;
     }
+    /**
+     * Updates the pie chart with the distribution of customers served by each cashier.
+     * This method calculates the percentage of total customers served by each cashier
+     * and updates the pie chart accordingly.
+     *
+     * @param servedCustomersMap A map where the key is the cashier ID (Integer) and
+     *                           the value is the number of customers served (Integer) by that cashier.
+     */
     private void updatePieChart(Map<Integer, Integer> servedCustomersMap) {
         int totalCustomersServed = servedCustomersMap.values().stream().mapToInt(Integer::intValue).sum();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
