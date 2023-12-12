@@ -1,10 +1,4 @@
 package model;
-// Simulate a queueing system with one service point and one queue.
-// The service time is normally distributed with mean 10.
-// The interarrival time is exponentially distributed with mean 15.
-// The simulation runs until the number of arrivals is 1000.
-// The program prints the average waiting time.
-// 2:09:10  - 23.11 (how B-phase works)
 
 import controller.Controller;
 import db.Dao;
@@ -68,16 +62,16 @@ public class Simulation extends Engine implements Runnable {
                 apDist = new Normal(meanAP, varianceAP);
                 break;
             case Uniform:
-                // ! Max > min!
+                // max > min
                 // double min, max
                 spDist = new Uniform(meanSP, varianceSP); //min, max
                 apDist = new Uniform(meanAP, varianceAP); //min, max.
                 break;
-                // temp comment for dev purpose, as second arg is type long
             case Exponential:
+                // mean > 0
                 // double mean, long seed
-                spDist = new Negexp(meanSP, (long) varianceSP);
-                apDist = new Negexp(meanAP, (long) varianceAP);
+                spDist = new Negexp(meanSP, (long) varianceSP); // mean, seed
+                apDist = new Negexp(meanAP, (long) varianceAP); // mean, seed
                 break;
             default:
                 controller.log("Invalid distribution type: " + dist, controller.RED);
