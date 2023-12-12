@@ -109,7 +109,7 @@
         </VBox>
     </left>
     <center>
-        <VBox prefHeight="471.0" prefWidth="730.0">
+        <VBox prefHeight="471.0" prefWidth="500.0" maxWidth="550.0">
             <HBox styleClass="hbox-spacing">
                 <Label style="-fx-font-size: 14px; -fx-font-family: Arial;" text="Visualisation:" />
                 <Pane HBox.hgrow="ALWAYS">
@@ -124,16 +124,16 @@
                   <Insets right="5.0" />
                </HBox.margin></Button>
             </HBox>
-            <StackPane prefHeight="352.0" prefWidth="600.0" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 2px;"> <!-- Your simulation container -->
+            <StackPane prefHeight="352.0" prefWidth="450.0" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-width: 2px;"> <!-- Your simulation container -->
                 <!-- Simulation content goes here -->
-                <HBox alignment="BOTTOM_CENTER" prefHeight="328.0" prefWidth="499.0" spacing="10">
+                <HBox alignment="BOTTOM_CENTER" prefHeight="328.0" prefWidth="350.0" spacing="10">
                     <GridPane fx:id="cashierGrid" alignment="CENTER" hgap="10" vgap="20">
                         <!-- Cashier images will be added here dynamically -->
                         <!-- The rows and columns will be managed in the controller -->
                     </GridPane>
                 </HBox>
             </StackPane>
-            <Accordion fx:id="accordion" prefHeight="151.0" prefWidth="623.0" VBox.vgrow="ALWAYS">
+            <Accordion fx:id="accordion" prefHeight="151.0" prefWidth="450.0" VBox.vgrow="ALWAYS">
                 <panes>
                     <TitledPane expanded="true" text="Logs">
                         <content>
