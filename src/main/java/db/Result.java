@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import model.Customer;
 import model.ServicePoint;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @Entity
@@ -20,14 +21,14 @@ public class Result {
 
     public Result() {}
 
-    public Result(ServicePoint[] servicePoints, Customer[] customers, int served, double time) {
+    public Result(ServicePoint[] servicePoints, ArrayList<Customer> customers, int served, double time) {
         this.served = served;
         this.time = time;
 
         cashiersCount = servicePoints.length;
-        arrived = customers.length;
+        arrived = customers.size();
 
-        double totalServiceTime = Arrays.stream(customers)
+        double totalServiceTime = customers.stream()
                 .filter(c -> c.getRemovalTime() > 0)
                 .mapToDouble(c -> c.getRemovalTime() - c.getArrivalTime())
                 .sum();
