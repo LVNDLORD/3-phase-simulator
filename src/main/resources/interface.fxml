@@ -8,22 +8,28 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@/css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
     <top>
-        <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" text="Supermarket queue simulator" BorderPane.alignment="CENTER" />
+        <Label style="-fx-font-size: 24px; -fx-font-family: Arial; -fx-padding: 20px; -fx-alignment: center;" styleClass="title " text="Supermarket Queue Simulation" BorderPane.alignment="CENTER" />
     </top>
     <left>
-        <VBox alignment="TOP_CENTER" prefHeight="533.0" prefWidth="209.0" style="-fx-padding: 10px; -fx-font-family: Arial; -fx-font-size: 14px; -fx-margin: 10px;">
+        <VBox prefHeight="547.0" prefWidth="230.0" style=" -fx-font-family: Arial; -fx-font-size: 14px; -fx-margin: 10px;" BorderPane.alignment="TOP_LEFT">
             <children>
-                <Label prefHeight="20.0" prefWidth="166.0" style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Input: " />
+                <Label prefHeight="4.0" prefWidth="166.0" style="-fx-font-size: 16px; -fx-font-family: Arial; -fx-font-weight: bold;" text="Input: ">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
                 <VBox prefHeight="48.0" prefWidth="150.0">
                     <children>
                         <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier">
                      <padding>
                         <Insets bottom="10.0" left="10.0" top="20.0" />
                      </padding></Label>
-                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="9" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1">
+                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="9" min="1" minWidth="-Infinity" prefHeight="42.0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1">
                      <padding>
                         <Insets left="10.0" />
-                     </padding></Slider>
+                     </padding>
+                     <VBox.margin>
+                        <Insets right="10.0" />
+                     </VBox.margin></Slider>
                     </children>
                 </VBox>
                 <VBox prefHeight="59.0" prefWidth="189.0">
@@ -36,7 +42,7 @@
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" />
                                  </padding></Label>
-                              <ComboBox fx:id="distributionComboBox" prefHeight="26.0" prefWidth="173.0">
+                              <ComboBox fx:id="distributionComboBox" prefHeight="26.0" prefWidth="184.0">
                                  <VBox.margin>
                                     <Insets left="10.0" />
                                  </VBox.margin>
@@ -60,7 +66,7 @@
                      </padding></Label>
                   <HBox prefHeight="45.0" prefWidth="189.0">
                      <children>
-                         <ComboBox fx:id="simulationTimeComboBox" prefHeight="26.0" prefWidth="174.0">
+                         <ComboBox fx:id="simulationTimeComboBox" prefHeight="26.0" prefWidth="184.0">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -140,12 +146,15 @@
             </VBox>
 
             </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
         </VBox>
     </left>
     <center>
         <VBox maxWidth="550.0" prefHeight="471.0" prefWidth="500.0">
             <HBox styleClass="hbox-spacing">
-                <Label alignment="TOP_CENTER" style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Visualisation:" />
+                <Label alignment="TOP_CENTER" style="-fx-font-size: 16px; -fx-font-family: Arial; -fx-font-weight: bold;" text="Visualisation:" />
                 <Pane HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -165,11 +174,11 @@
             </StackPane>
             <Accordion fx:id="accordion" prefHeight="151.0" prefWidth="450.0" VBox.vgrow="ALWAYS">
                 <panes>
-                    <TitledPane expanded="true" text="Logs">
+                    <TitledPane expanded="true" style="-fx-font-size: 16;" styleClass="logs-title" text="Logs">
                         <content>
                             <ScrollPane fx:id="logScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
                                 <content>
-                                    <TextFlow fx:id="logTextFlow" prefHeight="200" prefWidth="300" />
+                                    <TextFlow fx:id="logTextFlow" prefHeight="200" prefWidth="300" styleClass="log-text" />
                                 </content>
                             </ScrollPane>
                         </content>
@@ -181,7 +190,10 @@
     <right>
         <VBox prefHeight="533.0" prefWidth="305.0" BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="CENTER_RIGHT" style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Output:" />
+                <Label alignment="CENTER_RIGHT" style="-fx-font-size: 16px; -fx-font-family: Arial; -fx-font-weight: bold;" text="Output:">
+               <padding>
+                  <Insets left="10.0" />
+               </padding></Label>
             <Label fx:id="totalCustomersServedLabel" style="-fx-font-size: 14px;" text="Total customers served:">
                <padding>
                   <Insets left="10.0" top="10.0" />

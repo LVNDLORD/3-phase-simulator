@@ -9,6 +9,11 @@
     -fx-font-weight: bold;
     -fx-fill: #333366;
 }
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333366;
+}
 
 #infoText {
     -fx-font-size: 14px;
@@ -48,5 +53,15 @@
 
 .container-spacing {
     -fx-padding: 10px; /* Adds space inside the container's border */
+}
+.logs-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 0;
+}
+
+.log-text {
+    -fx-font-size: 12px; /* Smaller font size */
+    -fx-font-weight: normal;
 }
 
