@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -178,9 +179,10 @@
         </VBox>
     </center>
     <right>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="533.0" prefWidth="305.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Output:" />
+                <PieChart fx:id="pieChartResult" prefHeight="300.0" prefWidth="300.0" />
                 <HBox alignment="BOTTOM_RIGHT" spacing="10" VBox.vgrow="ALWAYS">
                     <Button onMouseClicked="#start" prefHeight="23.0" prefWidth="23.0" styleClass="button-spacing" text="▶" />
                     <Button fx:id="helpButton" onMouseClicked="#openInfo" prefHeight="23.0" prefWidth="22.0" styleClass="info-button button-spacing" text="?" />

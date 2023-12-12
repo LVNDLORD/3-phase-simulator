@@ -3,10 +3,13 @@ package controller;
 import java.io.InputStream;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,7 +73,8 @@ public class Controller implements QueueUpdateListener {
     private Button helpButton; // Button to display help and information about the simulation.
     @FXML
     private GridPane cashierGrid; // GridPane for arranging cashier elements in the UI.
-
+    @FXML
+    private PieChart pieChartResult;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -82,7 +86,7 @@ public class Controller implements QueueUpdateListener {
     private Accordion accordion;
     public static final String RED = "\033[0;31m";
     private Map<Integer, Label> cashierLabels = new HashMap<>(); // Map to link cashier number with their respective UI label.
-
+    private Map<Integer, Integer> servedCustomersMap = new HashMap<>();
     private Simulation sim; // Instance of the simulation model.
 
     public Controller() {
@@ -93,6 +97,9 @@ public class Controller implements QueueUpdateListener {
      * Initializes the controller. This method is automatically called after the FXML fields are injected.
      */
     public void initialize() {
+        pieChartResult.setData(FXCollections.observableArrayList(
+                new PieChart.Data("No Data", 0)
+        ));
         initializeCashierGrid();
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
@@ -251,6 +258,8 @@ public class Controller implements QueueUpdateListener {
     @Override
     public void updateQueueInfo(int cashierNumber, int queueLength, int servedCustomers) {
         Platform.runLater(() -> {
+            servedCustomersMap.put(cashierNumber, servedCustomers);
+            updatePieChart(servedCustomersMap);
             Label label = cashierLabels.get(cashierNumber);
             if (label != null) {
                 String text = "Queue: " + queueLength + " | Served: " + servedCustomers;
@@ -293,6 +302,15 @@ public class Controller implements QueueUpdateListener {
             }
         }
         return null;
+    }
+    private void updatePieChart(Map<Integer, Integer> servedCustomersMap) {
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        servedCustomersMap.forEach((cashierId, servedCustomers) -> {
+            pieChartData.add(new PieChart.Data("Cashier " + (cashierId +1), servedCustomers));
+        });
+
+        pieChartResult.setData(pieChartData);
     }
 
 
