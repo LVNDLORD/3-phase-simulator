@@ -107,7 +107,7 @@ public class Controller {
      * @param simulationTime     For how long simulation should run (in simulation
      *                           time, not real time)
      * @param distribution       Distribution type. Possible values are "Normal",
-     *                           "Binomial", "Exponential" and "Poisson"
+     *                           "Uniform" and "Exponential"
      * @return Boolean value, indicating whether simulation launch succeeded or
      *         failed
      */
