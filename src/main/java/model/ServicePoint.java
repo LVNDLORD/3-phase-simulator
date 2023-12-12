@@ -66,13 +66,16 @@ public class ServicePoint {
     }
 
     public void beginService() {
-        assert queue.peek() != null;
-        System.out.printf("%sStarting %s for the customer #%d%s\n", GREEN, name, queue.peek().getId(), WHITE);
-        // System.out.println("Customers in queue: " + (queue.size() - 1));
+        if (!queue.isEmpty()) {
+            System.out.printf("%sStarting %s for the customer #%d%s\n", GREEN, name, queue.peek().getId(), WHITE);
+            // System.out.println("Customers in queue: " + (queue.size() - 1));
 
-        reserved = true;
-        double serviceTime = generator.sample();
-        eventlist.add(new Event(eventTypeScheduled, Clock.getInstance().getClock() + serviceTime, this));
+            reserved = true;
+            double serviceTime = generator.sample();
+            eventlist.add(new Event(eventTypeScheduled, Clock.getInstance().getClock() + serviceTime, this));
+        } else {
+            System.out.printf("%sNo customer in the queue for %s%s\n", WHITE, name, WHITE);
+        }
     }
 
     public boolean isReserved() {
