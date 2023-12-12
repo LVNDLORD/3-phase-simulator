@@ -7,7 +7,11 @@ package model;
 // 2:09:10  - 23.11 (how B-phase works)
 
 import controller.Controller;
+import db.Dao;
+import db.Result;
 import model.eduni.distributions.*;
+
+import java.util.ArrayList;
 
 public class Simulation extends Engine implements Runnable {
     // Actual simulation body
@@ -16,6 +20,8 @@ public class Simulation extends Engine implements Runnable {
     private ArrivalProcess arrivalProcess;
 
     private ServicePoint[] servicePoints;
+
+    private ArrayList<Customer> customers = new ArrayList<>();
 
     private final Controller controller;
     private int customersServed;
@@ -84,8 +90,10 @@ public class Simulation extends Engine implements Runnable {
 
         switch (e.getType()) {
             case ARR:
+                Customer customer = new Customer();
                 ServicePoint sp = getShortestQueue();
-                sp.addToQueue(new Customer());
+                sp.addToQueue(customer);
+                customers.add(customer);
                 arrivalProcess.generateNextEvent();
                 break;
             case DEP:
@@ -130,5 +138,17 @@ public class Simulation extends Engine implements Runnable {
 
     public int getCustomersServed() {
         return customersServed;
+    }
+
+    public void end() {
+        Dao dao = new Dao();
+        Result result = new Result(servicePoints, customers, customersServed, Clock.getInstance().getClock());
+
+        try {
+            dao.persist(result);
+            System.out.println("Simulation results are saved to database");
+        } catch (Exception e) {
+            System.out.println("Failed to save simulation results to database. Error: " + e.getMessage());
+        }
     }
 }
