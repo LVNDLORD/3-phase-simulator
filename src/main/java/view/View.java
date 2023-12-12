@@ -13,7 +13,9 @@ public class View extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/interface.fxml"));
         Parent root = fxmlLoader.load();
 
-        // Set the icon
+
+
+                // Set the icon
         Image applicationIcon = new Image(getClass().getResourceAsStream("/icon.png"));
         stage.getIcons().add(applicationIcon);
 
