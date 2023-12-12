@@ -1,4 +1,5 @@
-package model;// Simulate a queueing system with one service point and one queue.
+package model;
+// Simulate a queueing system with one service point and one queue.
 // The service time is normally distributed with mean 10.
 // The interarrival time is exponentially distributed with mean 15.
 // The simulation runs until the number of arrivals is 1000.
@@ -6,35 +7,72 @@ package model;// Simulate a queueing system with one service point and one queue
 // 2:09:10  - 23.11 (how B-phase works)
 
 import controller.Controller;
-import model.eduni.distributions.Negexp;
-import model.eduni.distributions.Normal;
+import model.eduni.distributions.*;
 
-public class Simulation extends Engine {
+public class Simulation extends Engine implements Runnable {
     // Actual simulation body
     // Inform controller when simulation's state changes
 
     private ArrivalProcess arrivalProcess;
 
-    private ServicePoint[] servicePoint;
+    private ServicePoint[] servicePoints;
 
     private final Controller controller;
+    private int customersServed;
 
     public enum Distributions {
         Normal,
-        Binomial,
-        Exponential,
-        Poisson
+        Uniform,
+        Exponential
     }
 
-    public Simulation(Controller controller) {
+    /**
+     * Simulation constructor
+     * @param controller         Controller of the application
+     * @param servicePointsCount Number of cashier desks to initialize
+     * @param customersCount     ?
+     * @param dist               Probability distribution type. Provided by eduni package
+     */
+    public  Simulation(Controller controller, int servicePointsCount, int customersCount,
+                       Distributions dist, double meanSP, double varianceSP, double meanAP, double varianceAP) {
         super();
         this.controller = controller;
-        servicePoint = new ServicePoint[2]; // array for the service points. Increase the size to add new SPs.
-        servicePoint[0] = new ServicePoint("service ONE", new Normal(10, 6), eventlist, EventType.DEP1);
-        servicePoint[1] = new ServicePoint("service TWO", new Normal(10, 10), eventlist, EventType.DEP2);
-        arrivalProcess = new ArrivalProcess(new Negexp(10), eventlist, EventType.ARR); // average customer arrival time
+        // Create distributions
+        ContinuousGenerator spDist = new Normal(0, 1); // Default to Normal distribution with mean 0 and variance 1
+        ContinuousGenerator apDist = new Normal(0, 1);
 
-        log("Simulation initialized");
+
+        switch (dist) {
+            case Normal:
+                // double mean, variance
+                spDist = new Normal(meanSP, varianceSP);
+                apDist = new Normal(meanAP, varianceAP);
+                break;
+            case Uniform:
+                // ! Max > min!
+                // double min, max
+                spDist = new Uniform(meanSP, varianceSP); //min, max
+                apDist = new Uniform(meanAP, varianceAP); //min, max.
+                break;
+                // temp comment for dev purpose, as second arg is type long
+            case Exponential:
+                // double mean, long seed
+                spDist = new Negexp(meanSP, (long) varianceSP);
+                apDist = new Negexp(meanAP, (long) varianceAP);
+                break;
+            default:
+                controller.log("Invalid distribution type: " + dist, controller.RED);
+                return;
+        }
+
+        // Create service points
+        servicePoints = new ServicePoint[servicePointsCount];
+
+        for (int i=0; i<servicePointsCount; i++) {
+            servicePoints[i] = new ServicePoint("Cashier desk " + (i + 1), spDist, eventlist, EventType.DEP, controller::updateQueueInfo, i);
+        }
+
+        arrivalProcess = new ArrivalProcess(apDist, eventlist, EventType.ARR);
     }
 
     protected void initialize() {
@@ -42,30 +80,35 @@ public class Simulation extends Engine {
     }
 
     protected void runEvent(Event e) {
+        ServicePoint currentSP;
         Customer a;
 
         switch (e.getType()) {
             case ARR:
-                servicePoint[0].addToQueue(new Customer());
-                arrivalProcess.generateNextEvent(); // generate next arrival
+                ServicePoint sp = getShortestQueue();
+                sp.addToQueue(new Customer());
+                arrivalProcess.generateNextEvent();
                 break;
-
-            case DEP1:
-                a = servicePoint[0].removeFromQueue(); // removing from the first service point
-                servicePoint[1].addToQueue(a); // adding to the second service point
-                break;
-
-            case DEP2:
-                a = servicePoint[1].removeFromQueue(); // removing customer from the second service point
-                // when departure from the second service point is generated
-                a.setRemovalTime(Clock.getInstance().getClock()); // setting the removal time for the customer from the system
-                a.reportResults();
+            case DEP:
+                currentSP = e.getServicePoint();
+                if (currentSP != null) {
+                    a = currentSP.removeFromQueue();
+                    a.setRemovalTime(Clock.getInstance().getClock());
+                    a.reportResults();
+                    // Update both queue size and served customers using a single method
+                    int spNumber = currentSP.getCashierNumber();
+                    controller.updateQueueInfo(spNumber, currentSP.queueLength(), currentSP.getServedCustomers());
+                    customersServed += 1;
+                } else {
+                    // Handle the case where currentSP is null, log an error
+                    System.out.println("Error: ServicePoint is null for DEP event at time " + e.getTime());
+                }
                 break;
         }
     }
 
     protected void tryCEvents() {
-        for (ServicePoint sp : servicePoint) {
+        for (ServicePoint sp : servicePoints) {
             // C event - conditional
             // if sp ready, and there is a customer in the queue, we start the service.
             if (!sp.isReserved() && sp.isOnQueue()) {
@@ -74,13 +117,19 @@ public class Simulation extends Engine {
         }
     }
 
-    protected void results() {
-        System.out.printf("\nSimulation ended at %.2f\n", Clock.getInstance().getClock());
-        System.out.println("Total customers served: " + servicePoint[1].getServedCustomers());
-        //System.out.printf("Average service time: %.2f\n", servicePoint[0].getMeanServiceTime());
+    private ServicePoint getShortestQueue() {
+        ServicePoint shortest = servicePoints[0];
+
+        for (ServicePoint sp : servicePoints) {
+            if (sp.queueLength() < shortest.queueLength()) {
+                shortest = sp;
+            }
+        }
+
+        return shortest;
     }
 
-    private void log (String s) {
-        System.out.println(s);
+    public int getCustomersServed() {
+        return customersServed;
     }
 }

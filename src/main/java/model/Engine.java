@@ -32,7 +32,6 @@ public abstract class Engine {
             tryCEvents(); // put the customer to the service point queue
 
         }
-        results();
     }
 
 
@@ -55,7 +54,4 @@ public abstract class Engine {
     protected abstract void runEvent(Event e);
 
     protected abstract void tryCEvents();
-
-    protected abstract void results();
-
 }
