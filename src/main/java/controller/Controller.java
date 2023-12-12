@@ -203,7 +203,12 @@ public class Controller implements QueueUpdateListener {
         VBox cashierBox = (VBox) getNodeFromGridPane(cashierGrid, col, row);
         if (cashierBox != null) {
             String borderColor = isActive ? "green" : "red";
-            cashierBox.setStyle("-fx-border-color: " + borderColor + "; -fx-border-width: 2; -fx-padding: 5;");
+            cashierBox.setStyle("-fx-border-color: " + borderColor +
+                    "; -fx-border-width: 3" +
+                    "; -fx-padding: 5" +
+                    "; -fx-border-radius: 10" + // Adjust the radius value as needed
+                    "; -fx-background-radius: 10"); // Same radius for background to match
+
         }
     }
 
@@ -229,7 +234,7 @@ public class Controller implements QueueUpdateListener {
 
         VBox cashierBox = new VBox(10, cashierView, queueInfo); // 10 is the spacing between cashier image and queue info
         cashierBox.setAlignment(Pos.CENTER);
-        cashierBox.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-padding: 5;");
+        cashierBox.setStyle("-fx-border-color: red; -fx-border-width: 3; -fx-padding: 5; -fx-border-radius: 10; -fx-background-radius: 10;");
 
         return cashierBox;
     }
