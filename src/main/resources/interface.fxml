@@ -15,21 +15,33 @@
                 <Label style="-fx-font-size: 16px; -fx-font-family: Arial;" text="Input: " />
                 <VBox prefHeight="48.0" prefWidth="150.0">
                     <children>
-                        <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier" />
-                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="9" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1" />
+                        <Label prefHeight="17.0" prefWidth="130.0" text="Add a cashier">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" top="20.0" />
+                     </padding></Label>
+                        <Slider fx:id="cashierSlider" majorTickUnit="1" max="9" min="1" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding></Slider>
                     </children>
                 </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0">
+                <VBox prefHeight="59.0" prefWidth="189.0">
                     <children>
-                      <VBox prefHeight="141.0" prefWidth="189.0">
+                      <VBox prefHeight="66.0" prefWidth="189.0">
                           <children>
                         <VBox prefHeight="60.0" prefWidth="189.0">
                            <children>
-                              <Label text="Probability Distributions:" />
-                              <ComboBox fx:id="distributionComboBox" prefWidth="150.0">
+                              <Label text="Probability Distributions:">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" />
+                                 </padding></Label>
+                              <ComboBox fx:id="distributionComboBox" prefHeight="26.0" prefWidth="173.0">
                                  <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin></ComboBox>
+                                    <Insets left="10.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></ComboBox>
                            </children>
                            <VBox.margin>
                               <Insets top="5.0" />
@@ -39,12 +51,21 @@
                       </VBox>
                     </children>
                 </VBox>
-            <VBox prefHeight="86.0" prefWidth="150.0">
+            <VBox prefHeight="62.0" prefWidth="189.0">
                <children>
-                  <Label text="Simulation Time (h):" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <Label text="Simulation Time (h):">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" top="5.0" />
+                     </padding></Label>
+                  <HBox prefHeight="45.0" prefWidth="189.0">
                      <children>
-                         <ComboBox fx:id="simulationTimeComboBox" prefWidth="150.0" />
+                         <ComboBox fx:id="simulationTimeComboBox" prefHeight="26.0" prefWidth="174.0">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin></ComboBox>
                      </children>
                   </HBox>
                </children>
@@ -63,13 +84,19 @@
                         </Label>
                         <HBox prefHeight="33.0" prefWidth="150.0">
                            <children>
-                              <Label fx:id="SPmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean" />
+                              <Label fx:id="SPmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></Label>
                               <TextField fx:id="meanSPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="33.0" prefWidth="150.0">
                            <children>
-                               <Label fx:id="SPvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance" />
+                               <Label fx:id="SPvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></Label>
                               <TextField fx:id="varianceSPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
                            </children>
                         </HBox>
@@ -87,13 +114,19 @@
                         </Label>
                         <HBox prefHeight="33.0" prefWidth="150.0">
                            <children>
-                              <Label fx:id="APmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean" />
+                              <Label fx:id="APmeanLabel" prefHeight="16.0" prefWidth="108.0" text="Mean">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></Label>
                               <TextField fx:id="meanAPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
                            </children>
                         </HBox>
                         <HBox prefHeight="33.0" prefWidth="150.0">
                            <children>
-                              <Label fx:id="APvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance" />
+                              <Label fx:id="APvarianceLabel" prefHeight="16.0" prefWidth="108.0" text="Variance">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding></Label>
                               <TextField fx:id="varianceAPDistValueTextField" prefHeight="26.0" prefWidth="67.0" />
                            </children>
                         </HBox>
