@@ -75,6 +75,8 @@ public class Controller implements QueueUpdateListener {
     private GridPane cashierGrid; // GridPane for arranging cashier elements in the UI.
     @FXML
     private PieChart pieChartResult;
+    @FXML
+    private Label totalCustomersServedLabel;
 
     private String selectedDistribution = "Normal"; // Default distribution type
 
@@ -97,9 +99,6 @@ public class Controller implements QueueUpdateListener {
      * Initializes the controller. This method is automatically called after the FXML fields are injected.
      */
     public void initialize() {
-        pieChartResult.setData(FXCollections.observableArrayList(
-                new PieChart.Data("No Data", 0)
-        ));
         initializeCashierGrid();
         cashierSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
             updateCashierDesks(newValue.intValue());
@@ -304,10 +303,15 @@ public class Controller implements QueueUpdateListener {
         return null;
     }
     private void updatePieChart(Map<Integer, Integer> servedCustomersMap) {
+        int totalCustomersServed = servedCustomersMap.values().stream().mapToInt(Integer::intValue).sum();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
         servedCustomersMap.forEach((cashierId, servedCustomers) -> {
-            pieChartData.add(new PieChart.Data("Cashier " + (cashierId +1), servedCustomers));
+            if (totalCustomersServed > 0) {
+                double percentage = ((double) servedCustomers / totalCustomersServed) * 100;
+                String label = String.format("%d: %.2f%%", cashierId + 1, percentage);
+                pieChartData.add(new PieChart.Data(label, servedCustomers));
+            }
         });
 
         pieChartResult.setData(pieChartData);
@@ -421,6 +425,9 @@ public class Controller implements QueueUpdateListener {
      * @param customersServed Total number of customers served during simulation run
      */
     public void outputResults(int customersServed) {
+        Platform.runLater(() -> {
+            totalCustomersServedLabel.setText("Total Customers Served: " + customersServed);
+        });
         log("Simulation ended at " + (int)Clock.getInstance().getClock() + " mins");
         log ("Total customers served: " + customersServed);
     }
