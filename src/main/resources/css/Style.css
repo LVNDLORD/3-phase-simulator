@@ -20,6 +20,27 @@
     -fx-fill: #333333;
 }
 
+#instructionText {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+#mainDescription {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.subtitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.description {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
 .grid {
     -fx-padding: 20px;
     -fx-hgap: 10px;
@@ -64,4 +85,6 @@
     -fx-font-size: 12px; /* Smaller font size */
     -fx-font-weight: normal;
 }
+
+
 

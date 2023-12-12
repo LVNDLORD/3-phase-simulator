@@ -7,76 +7,134 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-/**
- * This class is responsible for creating and displaying the information view
- * for the supermarket queue simulation. It includes details about the simulation
- * and credits to the creators of the project. This view is an integral part of
- * the user interface of the simulation application.
- *
- * The class utilizes JavaFX components to create a visually appealing information
- * scene which can be displayed within the application's window.
- *
- * @author Arman Yerkeshev, Andrii Deshko, Dias Soares Sérgio, Anna Lindén, Aghajani Kiana
- * @version 1.0
- */
+import java.net.URL;
+
 public class SupermarketQueueSimulationInfo {
 
-    /**
-     * The width used for wrapping text elements in the information scene.
-     * This constant ensures that the text content is neatly formatted within
-     * the bounds of the application window.
-     */
-    private final int WRAPPING_WIDTH = 900;
-/**
- * Constructs a new instance of SupermarketQueueSimulationInfo.
- * This constructor initializes the information view with default settings.
- */
-public SupermarketQueueSimulationInfo() {}
+        private final int WRAPPING_WIDTH = 900;
 
-/**
- * Creates and returns a Scene containing the information view for the
- * supermarket queue simulation. This method sets up the layout and adds
- * text elements containing details about the simulation and its creators.
- *
- * The method arranges the text elements on a GridPane and applies styling
- * to ensure a clean and organized presentation.
- *
- * @return The Scene object representing the information view of the simulation.
- */
-public Scene createInfoScene() {
-        GridPane grid = new GridPane();
-        grid.setHgap(20);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setAlignment(Pos.TOP_CENTER);
+        public SupermarketQueueSimulationInfo() {}
 
-        Text title = new Text("Supermarket Queue Simulation");
-        title.setId("title");
-        title.setFill(Color.DARKBLUE);
+        public Scene createInfoScene() {
+                GridPane grid = new GridPane();
+                grid.setHgap(20);
+                grid.setVgap(10);
+                grid.setPadding(new Insets(10, 10, 10, 10));
+                grid.setAlignment(Pos.TOP_CENTER);
 
-        Text description = new Text(
-        "This simulation aims to analyze and optimize supermarket queue management. " +
-        "Various factors like queue length, service time, and customer satisfaction can be studied. " +
-        "Further details about the simulation will be added as the project progresses."
-        );
-        description.setWrappingWidth(WRAPPING_WIDTH);
-        description.setId("infoText");
+                Text title = new Text("Java Queue Simulator User Guide");
+                title.setId("title");
+                title.setFill(Color.DARKBLUE);
+                grid.add(title, 0, 0);
 
-        Text authors = new Text(
-        "Project Team: Arman Yerkeshev, Andrii Deshko, Dias Soares Sérgio, Anna Lindén, Aghajani Kiana"
-        );
-        authors.setWrappingWidth(WRAPPING_WIDTH);
-        authors.setId("infoText");
 
-        grid.add(title, 0, 0);
-        grid.add(description, 0, 1);
-        grid.add(authors, 0, 2);
 
-        grid.setStyle("-fx-background-color: #f0f0f0;");
+                // Main description
+                Text mainDescription = new Text(
+                        "Welcome to the Java Queue Simulator! This tool simulates a queue system with customizable parameters. " +
+                                "Ideal for students and professionals alike, it provides insights into how different settings impact queue dynamics.\n\n"
+                );
+                mainDescription.setId("mainDescription");
 
-        Scene scene = new Scene(grid);
-        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
-        return scene;
+// Subtitle: Getting Started
+                Text gettingStartedTitle = new Text("Getting Started\n");
+                gettingStartedTitle.setId("subtitle");
+
+// Getting Started Description
+                Text gettingStartedDescription = new Text(
+                        "Choose Your Input Parameters:\n" +
+                                "Location: Input settings are located on the left side of the interface.\n" +
+                                "Options:\n" +
+                                "- Number of Cashiers: Select between 1 to 9 cashiers.\n" +
+                                "- Probability Distributions: Choose from Normal, Uniform, or Exponential distributions.\n" +
+                                "- Simulation Time: Set the duration from 1 to 12 hours.\n" +
+                                "- Service Point and Arrival Process: Input values for mean and variance.\n\n"
+                );
+                gettingStartedDescription.setId("description");
+
+// Subtitle: Understanding the Simulation Area
+                Text simulationAreaTitle = new Text("Understanding the Simulation Area:\n");
+                simulationAreaTitle.setId("subtitle");
+
+// Simulation Area Description
+                Text simulationAreaDescription = new Text(
+                        "Located in the center, this area visualizes the simulation.\n" +
+                                "Once cashiers are set, their border color changes to green.\n" +
+                                "Below this area is a log that displays console messages during the simulation.\n\n"
+                );
+                simulationAreaDescription.setId("description");
+
+// Subtitle: Reviewing the Output
+                Text outputReviewTitle = new Text("Reviewing the Output:\n");
+                outputReviewTitle.setId("subtitle");
+
+// Output Review Description
+                Text outputReviewDescription = new Text(
+                        "On the right side, you'll find the output section.\n" +
+                                "It displays simulation results, including a pie chart.\n" +
+                                "The chart shows the total number of customers served and the percentage handled by each cashier.\n\n"
+                );
+                outputReviewDescription.setId("description");
+
+// Subtitle: Starting the Simulation
+                Text startSimulationTitle = new Text("Starting the Simulation:\n");
+                startSimulationTitle.setId("subtitle");
+
+// Starting Simulation Description
+                Text startSimulationDescription = new Text(
+                        "Press the 'Start' button located in the right bottom corner to begin the simulation.\n\n"
+                );
+                startSimulationDescription.setId("description");
+
+// Subtitle: Conclusion
+                Text conclusionTitle = new Text("Conclusion\n");
+                conclusionTitle.setId("subtitle");
+
+// Conclusion Description
+                Text conclusionDescription = new Text(
+                        "With these simple steps, you're ready to explore various queue scenarios. " +
+                                "Adjust the settings to see how different configurations affect customer flow and cashier efficiency. Happy simulating!\n"
+                );
+                conclusionDescription.setId("description");
+
+                // For subtitles
+                gettingStartedTitle.getStyleClass().add("subtitle");
+                simulationAreaTitle.getStyleClass().add("subtitle");
+                outputReviewTitle.getStyleClass().add("subtitle");
+                startSimulationTitle.getStyleClass().add("subtitle");
+                conclusionTitle.getStyleClass().add("subtitle");
+
+                // For descriptions
+                gettingStartedDescription.getStyleClass().add("description");
+                simulationAreaDescription.getStyleClass().add("description");
+                outputReviewDescription.getStyleClass().add("description");
+                startSimulationDescription.getStyleClass().add("description");
+                conclusionDescription.getStyleClass().add("description");
+
+
+                // Adding text elements to the GridPane
+                grid.add(mainDescription, 0, 1);
+                grid.add(gettingStartedTitle, 0, 2);
+                grid.add(gettingStartedDescription, 0, 3);
+                grid.add(simulationAreaTitle, 0, 4);
+                grid.add(simulationAreaDescription, 0, 5);
+                grid.add(outputReviewTitle, 0, 6);
+                grid.add(outputReviewDescription, 0, 7);
+                grid.add(startSimulationTitle, 0, 8);
+                grid.add(startSimulationDescription, 0, 9);
+                grid.add(conclusionTitle, 0, 10);
+                grid.add(conclusionDescription, 0, 11);
+
+
+                grid.setStyle("-fx-background-color: #f0f0f0;");
+
+                Scene scene = new Scene(grid);
+                URL stylesheetURL = getClass().getResource("/css/Style.css");
+                if (stylesheetURL != null) {
+                        scene.getStylesheets().add(stylesheetURL.toExternalForm());
+                } else {
+                        System.out.println("Stylesheet not found");
+                }
+                return scene;
         }
-        }
-
+}
