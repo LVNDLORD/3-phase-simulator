@@ -37,3 +37,16 @@
     -fx-max-width: 30px;
     -fx-max-height: 30px;
 }
+
+.button-spacing {
+    -fx-margin: 10px; /* Space outside the button's border */
+}
+
+.hbox-spacing {
+    -fx-spacing: 10px; /* Space between elements inside an HBox */
+}
+
+.container-spacing {
+    -fx-padding: 10px; /* Adds space inside the container's border */
+}
+
