@@ -7,6 +7,9 @@ import model.ServicePoint;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Represents the result of a simulation and serves as an ORM entity for database storage.
+ */
 @Entity
 public class Result {
     @Id
@@ -21,6 +24,14 @@ public class Result {
 
     public Result() {}
 
+    /**
+     * Constructs a Result object based on simulation outcomes and service point details.
+     *
+     * @param servicePoints An array of service points involved in the simulation.
+     * @param customers     An ArrayList containing the customers participating in the simulation.
+     * @param served        The count of customers served during the simulation.
+     * @param time          The total time duration of the simulation.
+     */
     public Result(ServicePoint[] servicePoints, ArrayList<Customer> customers, int served, double time) {
         this.served = served;
         this.time = time;
