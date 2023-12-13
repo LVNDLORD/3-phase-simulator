@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"controller"},{"l":"db"},{"l":"model"},{"l":"model.eduni.distributions"},{"l":"view"}];updateSearchResults();
