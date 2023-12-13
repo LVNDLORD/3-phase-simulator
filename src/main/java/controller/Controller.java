@@ -91,6 +91,8 @@ public class Controller implements QueueUpdateListener {
     private Map<Integer, Integer> servedCustomersMap = new HashMap<>();
     private Simulation sim; // Instance of the simulation model.
 
+    private Stage infoStage;
+
     public Controller() {
         log("Controller initialized");
     }
@@ -163,17 +165,21 @@ public class Controller implements QueueUpdateListener {
      */
     @FXML
     private void openInfo() {
+        //System.out.println("Opening info window...");
         try {
-            Stage infoStage = new Stage();
-            infoStage.setTitle("Supermarket Simulation Info");
 
-            SupermarketQueueSimulationInfo infoView = new SupermarketQueueSimulationInfo();
-            Scene scene = infoView.createInfoScene();
+            if (infoStage == null || !infoStage.isShowing()) {
+                infoStage = new Stage();
+                Image applicationIcon = new Image(getClass().getResourceAsStream("/icon.png"));
+                infoStage.getIcons().add(applicationIcon);
+                infoStage.setTitle("Supermarket Simulation Info");
 
-            infoStage.setScene(scene);
-            infoStage.show();
+                SupermarketQueueSimulationInfo infoView = new SupermarketQueueSimulationInfo();
+                infoStage.setScene(infoView.createInfoScene());
+                infoStage.show();
+            }
         } catch (Exception e) {
-            e.printStackTrace(); //
+            System.out.println(e.getMessage());
         }
     }
 
