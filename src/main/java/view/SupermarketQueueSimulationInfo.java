@@ -97,12 +97,15 @@ public class SupermarketQueueSimulationInfo {
                 );
                 conclusionDescription.setId("description");
 
+                Text authorsDescription = new Text("Made by students of Metropolia UAS: Andrii Deshko, Sergio Soares, Anna Linden, Arman Yerkeshev and Kiana Aghajani");
+
                 // For subtitles
                 gettingStartedTitle.getStyleClass().add("subtitle");
                 simulationAreaTitle.getStyleClass().add("subtitle");
                 outputReviewTitle.getStyleClass().add("subtitle");
                 startSimulationTitle.getStyleClass().add("subtitle");
                 conclusionTitle.getStyleClass().add("subtitle");
+                authorsDescription.getStyleClass().add("subtitle");
 
                 // For descriptions
                 gettingStartedDescription.getStyleClass().add("description");
@@ -110,6 +113,7 @@ public class SupermarketQueueSimulationInfo {
                 outputReviewDescription.getStyleClass().add("description");
                 startSimulationDescription.getStyleClass().add("description");
                 conclusionDescription.getStyleClass().add("description");
+                authorsDescription.getStyleClass().add("description");
 
 
                 // Adding text elements to the GridPane
@@ -124,6 +128,7 @@ public class SupermarketQueueSimulationInfo {
                 grid.add(startSimulationDescription, 0, 9);
                 grid.add(conclusionTitle, 0, 10);
                 grid.add(conclusionDescription, 0, 11);
+                grid.add(authorsDescription, 0, 12);
 
 
                 grid.setStyle("-fx-background-color: #f0f0f0;");
