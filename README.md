@@ -73,7 +73,7 @@ The user-friendly interface allows users to select parameters for simulation. <b
 Various [distributions](https://www.dcs.ed.ac.uk/home/simjava/distributions/doc/eduni/distributions/package-summary.html) have specific requirements for user input. <br>
 Error handling (as shown in demo) ensures the backend is resilient to incorrect input. 
 
-
+https://github.com/LVNDLORD/3-phase-simulator/assets/93579810/60d55567-46ad-47c5-abfa-7fb0618adacf
 
 [Link](https://users.metropolia.fi/~andriid/simulation_vid/gif_demo.gif) to demo GIF (if video is not working).
 
